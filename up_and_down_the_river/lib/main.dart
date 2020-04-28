@@ -1,5 +1,9 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/painting.dart';
 import 'package:upanddowntheriver/player.dart';
+
+import 'CreatePlayerScreen.dart';
 
 void main() {
   runApp(MaterialApp(
@@ -17,67 +21,97 @@ class SelectPlayer extends StatefulWidget {
 
 class SelectPlayerState extends State<SelectPlayer> {
   //Store player info
-  List<Player> currentPlayers = [
-    Player('Joshua', Colors.red, 0),
-  ];
+  List<Player> currentPlayers = new List<Player>();
 
-  List<Widget> playerWidgets = [
-    Container(
-      padding: EdgeInsets.all(20.0),
-      child: Row(
-        children: <Widget>[Text('Add player'), Icon(Icons.add)],
-      ),
-    )
-  ];
+  List<Widget> playerWidgets = new List<Widget>();
 
   int i = 0;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Up and down the river scorer'),
-        centerTitle: true,
-      ),
       body: SafeArea(
         child: Column(children: <Widget>[
           Container(
-            child: RaisedButton(
-              onPressed: buttonPressed,
+            margin: EdgeInsets.symmetric(
+              vertical: 10.0,
+              horizontal: 100.0,
+            ),
+            child: FlatButton(
+              child: Container(
+                padding: EdgeInsets.all(20.0),
+                color: Colors.tealAccent,
+                child: Center(
+                  child: Text('Start'),
+                ),
+              ),
+              onPressed: startGame,
             ),
           ),
-          Column(
-            children: playerWidgets,
-            //TODO Add in listview builder
+          Expanded(
+            child: Scrollbar(
+              child: ListView.builder(
+                itemCount: playerWidgets.length,
+                itemBuilder: (context, index) {
+//                  return playerWidgets[index];
+                  return playerWidgets[index];
+                },
+              ),
+            ),
+          ),
+          Container(
+            margin: EdgeInsets.all(20.0),
+            padding: EdgeInsets.all(5.0),
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(10.0),
+              color: Colors.grey,
+            ),
+            child: FlatButton(
+              clipBehavior: Clip.antiAlias,
+              shape: RoundedRectangleBorder(),
+              child: Center(
+                child: Text("New player"),
+              ),
+              onPressed: getNewPlayer,
+            ),
           ),
         ]),
       ),
     );
   }
 
-  void buttonPressed() {
-//    int i = 0;
-////    Widget widget = Padding(
-////      padding: const EdgeInsets.all(15.0),
-////      child: GestureDetector(
-////        child: Container(
-////          decoration: new BoxDecoration(
-////            borderRadius: new BorderRadius.all(Radius.circular(20.0)),
-////            color: currentPlayers[i].userColor,
-////          ),
-////          child: Row(children: <Widget>[
-////            Center(child: Text(currentPlayers[i].name)),
-////          ]),
-////        ),
-////      ),
-////    );
-////
-////    setState(() {
-////      playerWidgets.add(widget);
-////    });
+  getNewPlayer() async {
+    final Player newPlayer = await Navigator.push(
+        context, MaterialPageRoute(builder: (context) => CreatePlayer()));
+    displayPlayer(newPlayer); //Places player on screen
+    currentPlayers.insert(0, newPlayer); //Saves player to array
+  }
+
+  void displayPlayer(Player player) {
     setState(() {
-      playerWidgets.insert(0, Text('Hello?'));
+      playerWidgets.insert(
+          0,
+          Container(
+            margin: EdgeInsets.symmetric(
+              horizontal: 20.0,
+              vertical: 5.0,
+            ),
+            padding: EdgeInsets.all(20.0),
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(10.0),
+              color: player.userColor,
+            ),
+            child: Center(
+              child: Text(
+                player.name,
+                style: TextStyle(color: Colors.white),
+              ),
+            ),
+          ));
     });
-    print(playerWidgets.length);
+  }
+
+  void startGame() {
+    if()
   }
 }
