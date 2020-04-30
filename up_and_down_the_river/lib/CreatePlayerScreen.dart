@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_material_color_picker/flutter_material_color_picker.dart';
+import 'package:rflutter_alert/rflutter_alert.dart';
 import 'package:upanddowntheriver/player.dart';
 
 class CreatePlayer extends StatefulWidget {
@@ -57,6 +58,7 @@ class CreatePlayerState extends State<CreatePlayer> {
               ),
             ),
             Expanded(
+              flex: 2,
               child: Container(
                 padding: EdgeInsets.all(20.0),
                 child: MaterialColorPicker(
@@ -68,17 +70,44 @@ class CreatePlayerState extends State<CreatePlayer> {
                 ),
               ),
             ),
-            Container(
-              child: Center(
-                child: RaisedButton(
-                    child: Text('Add player'),
-                    onPressed: () {
-                      print(userColor);
-                      Navigator.pop(
-                          context, Player(nameController.text, userColor, 0));
-                    }),
-              ),
-            )
+            RaisedButton(
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10.0)),
+                padding: EdgeInsets.all(20.0),
+                color: Colors.blue,
+                child: Text(
+                  'Create player',
+                  style: TextStyle(
+                    color: Colors.white,
+                  ),
+                ),
+                onPressed: () {
+                  if (nameController.text.length > 1) {
+                    print(userColor);
+                    Navigator.pop(
+                        context, Player(nameController.text, userColor, 0));
+                  } else {
+                    Alert(
+                      context: context,
+                      type: AlertType.error,
+                      title: "Sorry",
+                      desc: "Please add a name to the player",
+                      buttons: [
+                        DialogButton(
+                          child: Text(
+                            "Ok",
+                            style: TextStyle(color: Colors.white, fontSize: 20),
+                          ),
+                          onPressed: () => Navigator.pop(context),
+                          width: 120,
+                        )
+                      ],
+                    ).show();
+                  }
+                }),
+            Expanded(
+              child: SizedBox(),
+            ),
           ]),
         ));
   }
