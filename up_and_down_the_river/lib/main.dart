@@ -7,7 +7,10 @@ void main() {
   runApp(Phoenix(
     //Phoenix allows the application to be restarted at the end of the game
     child: MaterialApp(
-      theme: ThemeData(primarySwatch: Colors.teal),
+      theme: ThemeData(
+        primaryColor: Colors.blue,
+        accentColor: Colors.blueAccent,
+      ),
       title: 'Up and down the river',
       home: SelectPlayer(),
     ),

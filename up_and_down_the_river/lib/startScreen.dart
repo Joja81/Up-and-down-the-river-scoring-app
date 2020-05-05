@@ -44,6 +44,10 @@ class SelectPlayerState extends State<SelectPlayer> {
               horizontal: 100.0,
             ),
             child: FlatButton(
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(10.0),
+              ),
+              color: Theme.of(context).accentColor,
               padding: EdgeInsets.all(20.0),
               child: Center(
                 child: Column(
@@ -86,8 +90,14 @@ class SelectPlayerState extends State<SelectPlayer> {
         ]),
       ),
       floatingActionButton: FloatingActionButton.extended(
-        icon: Icon(Icons.person_add),
-        label: Text("Add player"),
+        icon: Icon(
+          Icons.person_add,
+          color: Colors.white,
+        ),
+        label: Text(
+          "Add player",
+          style: TextStyle(color: Colors.white),
+        ),
         onPressed: getNewPlayer,
       ),
     );
