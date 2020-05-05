@@ -13,10 +13,10 @@ class ResultCollection extends StatefulWidget {
   final int roundNumber;
   @override
   ResultCollection(this.currentPlayers, this.numberCards, this.guesses,
-      this.maxNumberCards, this.roundNumber);
+      this.maxNumberCards, this.roundNumber); //Gets values from last page
   ResultCollectionState createState() {
-    return ResultCollectionState(
-        currentPlayers, numberCards, guesses, maxNumberCards, roundNumber);
+    return ResultCollectionState(currentPlayers, numberCards, guesses,
+        maxNumberCards, roundNumber); //Sends values to state
   }
 }
 
@@ -27,13 +27,14 @@ class ResultCollectionState extends State<ResultCollection> {
   final int maxNumberCards;
   final int roundNumber;
   ResultCollectionState(this.currentPlayers, this.numberCards, this.guesses,
-      this.maxNumberCards, this.roundNumber);
+      this.maxNumberCards, this.roundNumber); //Collects states
 
   List<int> results;
   @override
   void initState() {
     super.initState();
-    results = List.generate(currentPlayers.length, (i) => 0);
+    results = List.generate(currentPlayers.length,
+        (i) => 0); //Creates list of results, sets intital value to 0
   }
 
   @override
@@ -44,7 +45,8 @@ class ResultCollectionState extends State<ResultCollection> {
           icon: Icon(Icons.done_all),
           label: Text("View scores")),
       appBar: AppBar(
-        title: Text('Enter results: $numberCards cards'),
+        title: Text(
+            'Enter results: $numberCards cards'), //Shows how many cards there are
         centerTitle: true,
       ),
       backgroundColor: Colors.white,
@@ -54,6 +56,7 @@ class ResultCollectionState extends State<ResultCollection> {
           return displayPlayers(index);
         },
         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+          //Sets up grid
           crossAxisCount: 2,
         ),
       ),
@@ -61,6 +64,7 @@ class ResultCollectionState extends State<ResultCollection> {
   }
 
   Widget displayPlayers(int index) {
+    //Sets up each player display
     String heroName = 'hero' + currentPlayers[index].name;
 
     return Hero(
@@ -85,7 +89,8 @@ class ResultCollectionState extends State<ResultCollection> {
                 ),
               ),
               Text(
-                'Guess : ' + guesses[index].toString(),
+                'Guess : ' +
+                    guesses[index].toString(), //Shows the guess of the player
                 style: TextStyle(
                   fontSize: 20,
                   color: Colors.white,
@@ -93,15 +98,15 @@ class ResultCollectionState extends State<ResultCollection> {
               ),
               Theme(
                 data: ThemeData(
-                  accentColor: Colors.white,
+                  accentColor: Colors.white, //Sets color of number scroller
                 ),
                 child: Expanded(
                   child: NumberPicker.horizontal(
                     initialValue: results[index],
                     minValue: 0,
                     maxValue: numberCards,
-                    onChanged: (value) =>
-                        setState(() => results[index] = value),
+                    onChanged: (value) => setState(() => results[index] =
+                        value), //Updates value as player moves scroller
                   ),
                 ),
               )
@@ -114,12 +119,12 @@ class ResultCollectionState extends State<ResultCollection> {
 
   void checkResults() {
     int resultSum = 0;
-    print('test');
     for (int i = 0; i < results.length; i++) {
+      //Sums results
       resultSum = resultSum + results[i];
     }
-    print('$resultSum = $numberCards');
     if (resultSum == numberCards) {
+      //Checks to make sure correct number fo results entered
       print('inside if');
       changeToScore();
     } else {
@@ -128,11 +133,13 @@ class ResultCollectionState extends State<ResultCollection> {
   }
 
   void changeToScore() {
+    //Moves to scores screen
     Navigator.of(context).pushReplacement(_createRoute(currentPlayers,
         numberCards, maxNumberCards, results, guesses, roundNumber));
   }
 
   Route _createRoute(
+    //Sets up transition animation
     List<Player> currentPlayers,
     int numberCards,
     int maxNumberCards,

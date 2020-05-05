@@ -18,19 +18,26 @@ class SelectPlayer extends StatefulWidget {
 class SelectPlayerState extends State<SelectPlayer> {
   //Store player info
   List<Player> currentPlayers = new List<Player>();
-  int maxNumberCards = 5;
+  int maxNumberCards = 5; //Sets the initial value
 
   int i = 0;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+          title: Text("Down the river"),
+          centerTitle: true,
+          leading: IconButton(
+            icon: Icon(Icons.help),
+            onPressed: null,
+          )),
       body: SafeArea(
         child: Column(children: <Widget>[
           Container(
             decoration: BoxDecoration(
-              color: Colors.blue,
               borderRadius: BorderRadius.circular(20.0),
+              color: Theme.of(context).primaryColor,
             ),
             margin: EdgeInsets.symmetric(
               vertical: 30.0,
@@ -67,7 +74,8 @@ class SelectPlayerState extends State<SelectPlayer> {
                   initialValue: maxNumberCards,
                   minValue: 2,
                   maxValue: 52,
-                  onChanged: (value) => setState(() => maxNumberCards = value),
+                  onChanged: (value) => setState(() =>
+                      maxNumberCards = value), //Changes the maxNumberCard value
                 ),
               ],
             ),
@@ -78,7 +86,6 @@ class SelectPlayerState extends State<SelectPlayer> {
         ]),
       ),
       floatingActionButton: FloatingActionButton.extended(
-        backgroundColor: Colors.blue,
         icon: Icon(Icons.person_add),
         label: Text("Add player"),
         onPressed: getNewPlayer,
@@ -87,12 +94,13 @@ class SelectPlayerState extends State<SelectPlayer> {
   }
 
   getNewPlayer() async {
+    //Allows it to wait for reply
     final Player newPlayer = await Navigator.push(
         context, MaterialPageRoute(builder: (context) => CreatePlayer()));
     if (newPlayer.userColor != null) {
+      //Color is null if player hits back button instead of create player
       currentPlayers.add(newPlayer); //Saves player to array
     }
-    print(currentPlayers.length);
   }
 
   void _showSnackBar(BuildContext context, String text) {
@@ -101,19 +109,21 @@ class SelectPlayerState extends State<SelectPlayer> {
 
   void removePlayer(int index) {
     setState(() {
+      //Updates anything related to the variables enclosed
       currentPlayers.removeAt(index);
     });
   }
 
   checkPlayerNumber(List<Player> currentPlayers) {
     if (currentPlayers.length > 0) {
+      //Displays players if there are any otherwise it displays message saying to add players
       return displayList();
     } else {
       return Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            Text('Please add a player or two'),
+            Text('Please add two or more players'),
           ],
         ),
       );
@@ -123,6 +133,7 @@ class SelectPlayerState extends State<SelectPlayer> {
   void moveNextScreen() {
     if (currentPlayers.length > 1) {
       Navigator.pushReplacement(
+        //Change to next screen, deleting current screen
         context,
         MaterialPageRoute(
           builder: (context) =>
@@ -153,10 +164,11 @@ class SelectPlayerState extends State<SelectPlayer> {
     return ListView.builder(
       itemCount: currentPlayers.length,
       itemBuilder: (context, index) {
-        String heroName = 'hero' + currentPlayers[index].name;
+        String heroName =
+            'hero' + currentPlayers[index].name; //Name for animation store
 
         return Hero(
-          tag: heroName,
+          tag: heroName, //Identifier for animation
           child: Material(
             type: MaterialType.transparency,
             child: Slidable(
@@ -170,6 +182,7 @@ class SelectPlayerState extends State<SelectPlayer> {
               ),
               actions: <Widget>[
                 IconSlideAction(
+                  //Allows you to slide from the left to delete player
                   caption: 'Remove',
                   color: Colors.red,
                   icon: Icons.delete,

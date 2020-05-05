@@ -13,68 +13,82 @@ class CreatePlayer extends StatefulWidget {
 
 class CreatePlayerState extends State<CreatePlayer> {
   final TextEditingController nameController = new TextEditingController();
-  Color buttonColor = Colors.grey;
   Color userColor = Colors.grey;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          title: Text('Create new player'),
-        ),
-        body: SafeArea(
-          child: Column(children: <Widget>[
-            Container(
-              padding: EdgeInsets.all(40.0),
-              child: Center(
-                child: Text(
-                  'Name',
-                  style: TextStyle(
-                    fontSize: 22,
-                  ),
+      appBar: AppBar(
+        title: Text('Create new player'),
+      ),
+      body: SafeArea(
+        child: ListView(children: <Widget>[
+          Container(
+            padding: EdgeInsets.all(40.0),
+            child: Center(
+              child: Text(
+                'Name',
+                style: TextStyle(
+                  fontSize: 22,
                 ),
               ),
             ),
-            Container(
-              padding: EdgeInsets.symmetric(horizontal: 30.0),
-              child: TextField(
-                decoration: InputDecoration(
-                  border: OutlineInputBorder(),
-                  labelText: 'Name',
-                ),
-                controller: nameController,
+          ),
+          Container(
+            padding: EdgeInsets.symmetric(horizontal: 30.0),
+            child: TextField(
+              decoration: InputDecoration(
+                border: OutlineInputBorder(),
+                labelText: 'Name',
               ),
+              controller: nameController,
             ),
-            Container(
-              padding: EdgeInsets.all(40.0),
-              child: Center(
-                child: Text(
-                  'Colour',
-                  style: TextStyle(
-                    fontSize: 22,
-                    color: buttonColor,
-                  ),
-                ),
-              ),
-            ),
-            Expanded(
-              flex: 2,
-              child: Container(
-                padding: EdgeInsets.all(20.0),
-                child: MaterialColorPicker(
-                  allowShades: false,
-                  onColorChange: (color) => setState(() => userColor = color),
-                  onMainColorChange: (color) =>
-                      setState(() => userColor = color),
-                  selectedColor: userColor,
+          ),
+          Container(
+            padding: EdgeInsets.all(10.0),
+            child: Center(
+              child: Text(
+                'Colour',
+                style: TextStyle(
+                  fontSize: 22,
+                  color: Colors.grey,
                 ),
               ),
             ),
-            RaisedButton(
+          ),
+          Container(
+            padding: EdgeInsets.symmetric(
+              vertical: 20,
+              horizontal: 60,
+            ),
+            child: RaisedButton(
+              shape: CircleBorder(),
+              padding: EdgeInsets.all(50.0),
+              color: userColor,
+              child: Text(
+                "Select colour",
+                style: TextStyle(
+                  color: Colors.white,
+                ),
+              ),
+              onPressed: () {
+                showDialog(
+                  context: context,
+                  builder: (context) {
+                    return displayDialog(context);
+                  },
+                );
+              },
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.symmetric(
+              horizontal: 20.0,
+            ),
+            child: RaisedButton(
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(10.0)),
-                padding: EdgeInsets.all(20.0),
-                color: Colors.blue,
+                color: Theme.of(context).primaryColor,
                 child: Text(
                   'Create player',
                   style: TextStyle(
@@ -82,7 +96,8 @@ class CreatePlayerState extends State<CreatePlayer> {
                   ),
                 ),
                 onPressed: () {
-                  if (nameController.text.length > 1) {
+                  if (nameController.text.length > 0) {
+                    //Checks to make sure a name has been entered
                     print(userColor);
                     Navigator.pop(
                         context, Player(nameController.text, userColor, 0));
@@ -105,10 +120,55 @@ class CreatePlayerState extends State<CreatePlayer> {
                     ).show();
                   }
                 }),
-            Expanded(
-              child: SizedBox(),
+          ),
+        ]),
+      ),
+    );
+  }
+
+  Dialog displayDialog(BuildContext context) {
+    Color tempColor = Colors.grey;
+    return Dialog(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[
+          SizedBox(
+            height: 30,
+          ),
+          Expanded(
+            child: MaterialColorPicker(
+              onMainColorChange: (Color color) {
+                tempColor = color;
+              },
+              allowShades: false,
             ),
-          ]),
-        ));
+          ),
+          SizedBox(
+            height: 10,
+          ),
+          RaisedButton(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(10.0),
+            ),
+            child: Container(
+              margin: EdgeInsets.all(20.0),
+              child: Text("Select"),
+            ),
+            color: Theme.of(context).primaryColor,
+            onPressed: () {
+              setState(() {
+                userColor = tempColor;
+              });
+              Navigator.of(context).pop();
+            },
+          ),
+          Expanded(
+            child: SizedBox(
+              height: 10,
+            ),
+          ),
+        ],
+      ),
+    );
   }
 }

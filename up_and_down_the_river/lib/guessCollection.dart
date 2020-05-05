@@ -12,13 +12,14 @@ class GuessCollection extends StatefulWidget {
   final int roundNumber;
   @override
   GuessCollection(
-    this.currentPlayers,
+    this.currentPlayers, //Getting variables from last page
     this.numberCards,
     this.maxNumberCards,
     this.roundNumber,
   );
   GuessCollectionState createState() {
     return GuessCollectionState(
+      //Sending variables to state
       this.currentPlayers,
       this.numberCards,
       this.maxNumberCards,
@@ -33,6 +34,7 @@ class GuessCollectionState extends State<GuessCollection> {
   final int maxNumberCards;
   final int roundNumber;
   GuessCollectionState(
+    //Getting variables from createState
     this.currentPlayers,
     this.numberCards,
     this.maxNumberCards,
@@ -43,7 +45,10 @@ class GuessCollectionState extends State<GuessCollection> {
   @override
   void initState() {
     super.initState();
-    guesses = List.generate(currentPlayers.length, (i) => 0);
+    guesses = List.generate(
+        currentPlayers.length,
+        (i) =>
+            0); //Create list for guesses, all set as 0 as this is what appears on the selectors initially
   }
 
   @override
@@ -66,6 +71,7 @@ class GuessCollectionState extends State<GuessCollection> {
           return displayPlayers(index);
         },
         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+          //Sets grid style
           crossAxisCount: 2,
         ),
       ),
@@ -73,6 +79,7 @@ class GuessCollectionState extends State<GuessCollection> {
   }
 
   Widget displayPlayers(int index) {
+    //Add position of player to the screen
     int numberPlayers = currentPlayers.length;
     if (index > 0 && index < (numberPlayers - 1)) {
       String frontText = (index + 1).toString() + '. ';
@@ -85,10 +92,11 @@ class GuessCollectionState extends State<GuessCollection> {
   }
 
   Widget playerContainer(int index, String start) {
-    String heroName = 'hero' + currentPlayers[index].name;
+    String heroName =
+        'hero' + currentPlayers[index].name; //Name for animation store
 
     return Hero(
-      tag: heroName,
+      tag: heroName, //Animation identifier
       child: Material(
         type: MaterialType.transparency,
         child: Container(
@@ -118,8 +126,8 @@ class GuessCollectionState extends State<GuessCollection> {
                     initialValue: guesses[index],
                     minValue: 0,
                     maxValue: numberCards,
-                    onChanged: (value) =>
-                        setState(() => guesses[index] = value),
+                    onChanged: (value) => setState(
+                        () => guesses[index] = value), //Sets value for guess
                   ),
                 ),
               )
@@ -133,9 +141,11 @@ class GuessCollectionState extends State<GuessCollection> {
   void moveToResults() {
     int guessSum = 0;
     for (int i = 0; i < guesses.length; ++i) {
+      //Sums up guesses
       guessSum += guesses[i];
     }
     if (guessSum == numberCards) {
+      //Checks to make sure that the guesses don't add up to the number of cards
       displayWarning();
     } else {
       Navigator.of(context).pushReplacement(_createRoute(
@@ -164,8 +174,12 @@ class GuessCollectionState extends State<GuessCollection> {
   }
 }
 
-Route _createRoute(List<Player> currentPlayers, int numberCards,
-    List<int> guesses, int maxNumberCards, int roundNumber) {
+Route _createRoute(
+    List<Player> currentPlayers,
+    int numberCards, //Sets up animation to next screen
+    List<int> guesses,
+    int maxNumberCards,
+    int roundNumber) {
   return PageRouteBuilder(
     pageBuilder: (context, animation, secondaryAnimation) => ResultCollection(
         currentPlayers, numberCards, guesses, maxNumberCards, roundNumber),

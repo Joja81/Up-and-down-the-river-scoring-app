@@ -65,7 +65,7 @@ class ScoreDisplayState extends State<ScoreDisplay> {
   Widget displayCurrentPlayer(BuildContext context, int index) {
     calculateScore(index);
     String playerScore = currentPlayers[index].score.toString();
-    String heroName = 'hero' + currentPlayers[index].name;
+    String heroName = 'hero' + currentPlayers[index].name; //
     return Hero(
       tag: heroName,
       child: Material(
@@ -88,6 +88,7 @@ class ScoreDisplayState extends State<ScoreDisplay> {
 
   void calculateScore(int index) {
     if (guesses[index] == results[index]) {
+      //Checks if user guess and result were equal
       int scoreAddition = 10 + 5 * results[index];
       currentPlayers[index].score += scoreAddition;
     }
@@ -95,6 +96,7 @@ class ScoreDisplayState extends State<ScoreDisplay> {
 
   void changeCardNumber() {
     if (roundNumber >= maxNumberCards) {
+      //Checks if game is going up or down the river
       numberCards--;
     } else {
       numberCards++;
@@ -132,16 +134,16 @@ class ScoreDisplayState extends State<ScoreDisplay> {
   }
 
   void rearrangePlayers() {
-    Player tempPlayer = currentPlayers[0];
+    Player tempPlayer =
+        currentPlayers[0]; //Puts the player who was first last time at the end
     currentPlayers.removeAt(0);
     currentPlayers.add(tempPlayer);
   }
 
   actionButtonChanger() {
-    if (roundNumber >= maxNumberCards) {
-      if (numberCards == 1) {
-        return actionButtonFinish();
-      }
+    if (roundNumber >= maxNumberCards && numberCards == 1) {
+      //Checks if the game is finished
+      return actionButtonFinish();
     }
     return actionButtonNext();
   }
