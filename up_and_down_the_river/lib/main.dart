@@ -12,7 +12,7 @@ void main() {
         accentColor: Colors.blueAccent,
       ),
       title: 'Up and down the river',
-      home: SelectPlayer(),
+      home: StartScreen(),
     ),
   ));
 }

@@ -8,14 +8,14 @@ import 'package:upanddowntheriver/player.dart';
 
 import 'CreatePlayerScreen.dart';
 
-class SelectPlayer extends StatefulWidget {
+class StartScreen extends StatefulWidget {
   @override
-  SelectPlayerState createState() {
-    return SelectPlayerState();
+  StartScreenState createState() {
+    return StartScreenState();
   }
 }
 
-class SelectPlayerState extends State<SelectPlayer> {
+class StartScreenState extends State<StartScreen> {
   //Store player info
   List<Player> currentPlayers = new List<Player>();
   int maxNumberCards = 5; //Sets the initial value
@@ -106,7 +106,10 @@ class SelectPlayerState extends State<SelectPlayer> {
   getNewPlayer() async {
     //Allows it to wait for reply
     final Player newPlayer = await Navigator.push(
-        context, MaterialPageRoute(builder: (context) => CreatePlayer()));
+        context,
+        MaterialPageRoute(
+            builder: (context) =>
+                CreatePlayer())); //Shifts screen to create player screen
     if (newPlayer.userColor != null) {
       //Color is null if player hits back button instead of create player
       currentPlayers.add(newPlayer); //Saves player to array
@@ -144,6 +147,7 @@ class SelectPlayerState extends State<SelectPlayer> {
     if (currentPlayers.length > 1) {
       Navigator.pushReplacement(
         //Change to next screen, deleting current screen
+        // Changes screen to score guess collection
         context,
         MaterialPageRoute(
           builder: (context) =>

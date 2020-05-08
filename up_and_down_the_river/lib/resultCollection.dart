@@ -125,7 +125,6 @@ class ResultCollectionState extends State<ResultCollection> {
     }
     if (resultSum == numberCards) {
       //Checks to make sure correct number fo results entered
-      print('inside if');
       changeToScore();
     } else {
       displayWarning();

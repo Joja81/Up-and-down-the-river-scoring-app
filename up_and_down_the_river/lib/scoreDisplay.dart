@@ -118,7 +118,7 @@ class ScoreDisplayState extends State<ScoreDisplay> {
     Alert(
       context: context,
       type: AlertType.success,
-      title: "Congradulations",
+      title: "Congratulations",
       desc: "You have finished your game",
       buttons: [
         DialogButton(
