@@ -7,13 +7,13 @@ import 'package:upanddowntheriver/resultCollection.dart';
 
 class GuessCollection extends StatefulWidget {
   final List<Player> currentPlayers;
-  final int numberCards;
+  final int cardNumber;
   final int maxNumberCards;
   final int roundNumber;
   @override
   GuessCollection(
     this.currentPlayers, //Getting variables from last page
-    this.numberCards,
+    this.cardNumber,
     this.maxNumberCards,
     this.roundNumber,
   );
@@ -21,7 +21,7 @@ class GuessCollection extends StatefulWidget {
     return GuessCollectionState(
       //Sending variables to state
       this.currentPlayers,
-      this.numberCards,
+      this.cardNumber,
       this.maxNumberCards,
       this.roundNumber,
     );
@@ -30,13 +30,13 @@ class GuessCollection extends StatefulWidget {
 
 class GuessCollectionState extends State<GuessCollection> {
   final List<Player> currentPlayers;
-  final int numberCards;
+  final int cardNumber;
   final int maxNumberCards;
   final int roundNumber;
   GuessCollectionState(
     //Getting variables from createState
     this.currentPlayers,
-    this.numberCards,
+    this.cardNumber,
     this.maxNumberCards,
     this.roundNumber,
   );
@@ -61,14 +61,14 @@ class GuessCollectionState extends State<GuessCollection> {
           icon: Icon(Icons.done_all),
           label: Text("Enter results")),
       appBar: AppBar(
-        title: Text('Enter guesses: $numberCards cards'),
+        title: Text('Enter guesses: $cardNumber cards'),
         centerTitle: true,
       ),
       backgroundColor: Colors.white,
       body: GridView.builder(
         itemCount: currentPlayers.length,
         itemBuilder: (context, index) {
-          return displayPlayers(index);
+          return displayPlayers(index); //Builds grid of widgets
         },
         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
           //Sets grid style
@@ -104,7 +104,7 @@ class GuessCollectionState extends State<GuessCollection> {
           padding: EdgeInsets.fromLTRB(0, 10, 0, 0),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(20.0),
-            color: currentPlayers[index].userColor,
+            color: currentPlayers[index].color,
           ),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -125,7 +125,7 @@ class GuessCollectionState extends State<GuessCollection> {
                   child: NumberPicker.horizontal(
                     initialValue: guesses[index],
                     minValue: 0,
-                    maxValue: numberCards,
+                    maxValue: cardNumber,
                     onChanged: (value) => setState(
                         () => guesses[index] = value), //Sets value for guess
                   ),
@@ -144,12 +144,12 @@ class GuessCollectionState extends State<GuessCollection> {
       //Sums up guesses
       guessSum += guesses[i];
     }
-    if (guessSum == numberCards) {
+    if (guessSum == cardNumber) {
       //Checks to make sure that the guesses don't add up to the number of cards
       displayWarning();
     } else {
       Navigator.of(context).pushReplacement(_createRoute(
-          currentPlayers, numberCards, guesses, maxNumberCards, roundNumber));
+          currentPlayers, cardNumber, guesses, maxNumberCards, roundNumber));
     }
   }
 
@@ -176,13 +176,13 @@ class GuessCollectionState extends State<GuessCollection> {
 
 Route _createRoute(
     List<Player> currentPlayers,
-    int numberCards, //Sets up animation to next screen
+    int cardNumber, //Sets up animation to next screen
     List<int> guesses,
     int maxNumberCards,
     int roundNumber) {
   return PageRouteBuilder(
     pageBuilder: (context, animation, secondaryAnimation) => ResultCollection(
-        currentPlayers, numberCards, guesses, maxNumberCards, roundNumber),
+        currentPlayers, cardNumber, guesses, maxNumberCards, roundNumber),
     transitionsBuilder: (context, animation, secondaryAnimation, child) {
       var begin = Offset(1.0, 0.0);
       var end = Offset.zero;

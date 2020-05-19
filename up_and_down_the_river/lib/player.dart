@@ -2,11 +2,11 @@ import 'dart:ui';
 
 class Player {
   String name;
-  Color userColor;
+  Color color;
   int score;
   Player(String n, Color c, int s) {
     name = n;
-    userColor = c;
+    color = c;
     score = s;
   }
 }

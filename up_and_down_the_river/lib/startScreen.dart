@@ -26,12 +26,9 @@ class StartScreenState extends State<StartScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-          title: Text("Down the river"),
-          centerTitle: true,
-          leading: IconButton(
-            icon: Icon(Icons.help),
-            onPressed: null,
-          )),
+        title: Text("Down the river"),
+        centerTitle: true,
+      ),
       body: SafeArea(
         child: Column(children: <Widget>[
           Container(
@@ -76,7 +73,7 @@ class StartScreenState extends State<StartScreen> {
                 Text('Max number of cards'),
                 NumberPicker.horizontal(
                   initialValue: maxNumberCards,
-                  minValue: 2,
+                  minValue: 3,
                   maxValue: 52,
                   onChanged: (value) => setState(() =>
                       maxNumberCards = value), //Changes the maxNumberCard value
@@ -85,7 +82,7 @@ class StartScreenState extends State<StartScreen> {
             ),
           ),
           Expanded(
-            child: checkPlayerNumber(currentPlayers),
+            child: displayPlayers(currentPlayers),
           ),
         ]),
       ),
@@ -110,7 +107,7 @@ class StartScreenState extends State<StartScreen> {
         MaterialPageRoute(
             builder: (context) =>
                 CreatePlayer())); //Shifts screen to create player screen
-    if (newPlayer.userColor != null) {
+    if (newPlayer.color != null) {
       //Color is null if player hits back button instead of create player
       currentPlayers.add(newPlayer); //Saves player to array
     }
@@ -127,7 +124,7 @@ class StartScreenState extends State<StartScreen> {
     });
   }
 
-  checkPlayerNumber(List<Player> currentPlayers) {
+  displayPlayers(List<Player> currentPlayers) {
     if (currentPlayers.length > 0) {
       //Displays players if there are any otherwise it displays message saying to add players
       return displayList();
@@ -190,7 +187,7 @@ class StartScreenState extends State<StartScreen> {
               actionExtentRatio: 0.25,
               child: ListTile(
                 leading: CircleAvatar(
-                  backgroundColor: currentPlayers[index].userColor,
+                  backgroundColor: currentPlayers[index].color,
                 ),
                 title: Text(currentPlayers[index].name),
               ),

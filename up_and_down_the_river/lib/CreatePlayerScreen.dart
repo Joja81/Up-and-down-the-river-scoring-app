@@ -99,30 +99,7 @@ class CreatePlayerState extends State<CreatePlayer> {
                     ),
                   ),
                   onPressed: () {
-                    if (nameController.text.length > 0) {
-                      //Checks to make sure a name has been entered
-                      print(userColor);
-                      Navigator.pop(
-                          context, Player(nameController.text, userColor, 0));
-                    } else {
-                      Alert(
-                        context: context,
-                        type: AlertType.error,
-                        title: "Sorry",
-                        desc: "Please add a name to the player",
-                        buttons: [
-                          DialogButton(
-                            child: Text(
-                              "Ok",
-                              style:
-                                  TextStyle(color: Colors.white, fontSize: 20),
-                            ),
-                            onPressed: () => Navigator.pop(context),
-                            width: 120,
-                          )
-                        ],
-                      ).show();
-                    }
+                    createPlayer(context);
                   }),
             ],
           ),
@@ -131,8 +108,33 @@ class CreatePlayerState extends State<CreatePlayer> {
     );
   }
 
+  void createPlayer(BuildContext context) {
+    if (nameController.text.length > 0) {
+      //Checks to make sure a name has been entered
+      print(userColor);
+      Navigator.pop(context, Player(nameController.text, userColor, 0));
+    } else {
+      Alert(
+        context: context,
+        type: AlertType.error,
+        title: "Sorry",
+        desc: "Please add a name to the player",
+        buttons: [
+          DialogButton(
+            child: Text(
+              "Ok",
+              style: TextStyle(color: Colors.white, fontSize: 20),
+            ),
+            onPressed: () => Navigator.pop(context),
+            width: 120,
+          )
+        ],
+      ).show();
+    }
+  }
+
   Dialog displayDialog(BuildContext context) {
-    Color tempColor = Colors.grey;
+    Color tempColor = userColor;
     return Dialog(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,

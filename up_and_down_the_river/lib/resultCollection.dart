@@ -7,26 +7,26 @@ import 'package:upanddowntheriver/scoreDisplay.dart';
 
 class ResultCollection extends StatefulWidget {
   final List<Player> currentPlayers;
-  final int numberCards;
+  final int cardNumber;
   final List<int> guesses;
   final int maxNumberCards;
   final int roundNumber;
   @override
-  ResultCollection(this.currentPlayers, this.numberCards, this.guesses,
+  ResultCollection(this.currentPlayers, this.cardNumber, this.guesses,
       this.maxNumberCards, this.roundNumber); //Gets values from last page
   ResultCollectionState createState() {
-    return ResultCollectionState(currentPlayers, numberCards, guesses,
+    return ResultCollectionState(currentPlayers, cardNumber, guesses,
         maxNumberCards, roundNumber); //Sends values to state
   }
 }
 
 class ResultCollectionState extends State<ResultCollection> {
   final List<Player> currentPlayers;
-  final int numberCards;
+  final int cardNumber;
   final List<int> guesses;
   final int maxNumberCards;
   final int roundNumber;
-  ResultCollectionState(this.currentPlayers, this.numberCards, this.guesses,
+  ResultCollectionState(this.currentPlayers, this.cardNumber, this.guesses,
       this.maxNumberCards, this.roundNumber); //Collects states
 
   List<int> results;
@@ -46,7 +46,7 @@ class ResultCollectionState extends State<ResultCollection> {
           label: Text("View scores")),
       appBar: AppBar(
         title: Text(
-            'Enter results: $numberCards cards'), //Shows how many cards there are
+            'Enter results: $cardNumber cards'), //Shows how many cards there are
         centerTitle: true,
       ),
       backgroundColor: Colors.white,
@@ -76,7 +76,7 @@ class ResultCollectionState extends State<ResultCollection> {
           margin: EdgeInsets.all(10.0),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(20.0),
-            color: currentPlayers[index].userColor,
+            color: currentPlayers[index].color,
           ),
           child: Column(
             children: <Widget>[
@@ -104,7 +104,7 @@ class ResultCollectionState extends State<ResultCollection> {
                   child: NumberPicker.horizontal(
                     initialValue: results[index],
                     minValue: 0,
-                    maxValue: numberCards,
+                    maxValue: cardNumber,
                     onChanged: (value) => setState(() => results[index] =
                         value), //Updates value as player moves scroller
                   ),
@@ -123,7 +123,7 @@ class ResultCollectionState extends State<ResultCollection> {
       //Sums results
       resultSum = resultSum + results[i];
     }
-    if (resultSum == numberCards) {
+    if (resultSum == cardNumber) {
       //Checks to make sure correct number fo results entered
       changeToScore();
     } else {
@@ -134,13 +134,13 @@ class ResultCollectionState extends State<ResultCollection> {
   void changeToScore() {
     //Moves to scores screen
     Navigator.of(context).pushReplacement(_createRoute(currentPlayers,
-        numberCards, maxNumberCards, results, guesses, roundNumber));
+        cardNumber, maxNumberCards, results, guesses, roundNumber));
   }
 
   Route _createRoute(
     //Sets up transition animation
     List<Player> currentPlayers,
-    int numberCards,
+    int cardNumber,
     int maxNumberCards,
     List<int> results,
     List<int> guesses,
@@ -149,7 +149,7 @@ class ResultCollectionState extends State<ResultCollection> {
     return PageRouteBuilder(
       pageBuilder: (context, animation, secondaryAnimation) => ScoreDisplay(
         currentPlayers,
-        numberCards,
+        cardNumber,
         maxNumberCards,
         results,
         guesses,
@@ -183,7 +183,7 @@ class ResultCollectionState extends State<ResultCollection> {
             "Ok",
             style: TextStyle(color: Colors.white, fontSize: 20),
           ),
-          onPressed: () => Navigator.pop(context),
+          onPressed: () => Navigator.pop(context), //Removes warning
           width: 120,
         )
       ],

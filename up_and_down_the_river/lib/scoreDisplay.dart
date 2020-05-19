@@ -8,14 +8,14 @@ import 'guessCollection.dart';
 
 class ScoreDisplay extends StatefulWidget {
   final List<Player> currentPlayers;
-  final int numberCards;
+  final int cardNumber;
   final int maxNumberCards;
   final List<int> results;
   final List<int> guesses;
   final int roundNumber;
   ScoreDisplay(
     this.currentPlayers,
-    this.numberCards,
+    this.cardNumber,
     this.maxNumberCards,
     this.results,
     this.guesses,
@@ -23,21 +23,21 @@ class ScoreDisplay extends StatefulWidget {
   );
   @override
   ScoreDisplayState createState() {
-    return ScoreDisplayState(currentPlayers, numberCards, maxNumberCards,
+    return ScoreDisplayState(currentPlayers, cardNumber, maxNumberCards,
         results, guesses, roundNumber);
   }
 }
 
 class ScoreDisplayState extends State<ScoreDisplay> {
   final List<Player> currentPlayers;
-  int numberCards;
+  int cardNumber;
   final int maxNumberCards;
   final List<int> results;
   final List<int> guesses;
   int roundNumber;
   ScoreDisplayState(
     this.currentPlayers,
-    this.numberCards,
+    this.cardNumber,
     this.maxNumberCards,
     this.results,
     this.guesses,
@@ -64,17 +64,17 @@ class ScoreDisplayState extends State<ScoreDisplay> {
 
   Widget displayCurrentPlayer(BuildContext context, int index) {
     calculateScore(index);
-    String playerScore = currentPlayers[index].score.toString();
-    String heroName = 'hero' + currentPlayers[index].name; //
+    String heroName = 'hero' + currentPlayers[index].name;
     return Hero(
       tag: heroName,
       child: Material(
         type: MaterialType.transparency,
         child: ListTile(
           leading: CircleAvatar(
-            backgroundColor: currentPlayers[index].userColor,
+            backgroundColor: currentPlayers[index].color,
           ),
-          title: Text(currentPlayers[index].name + ': $playerScore'),
+          title: Text(
+              currentPlayers[index].name + ': $currentPlayers[index].score'),
         ),
       ),
     );
@@ -97,9 +97,9 @@ class ScoreDisplayState extends State<ScoreDisplay> {
   void changeCardNumber() {
     if (roundNumber >= maxNumberCards) {
       //Checks if game is going up or down the river
-      numberCards--;
+      cardNumber--;
     } else {
-      numberCards++;
+      cardNumber++;
     }
     roundNumber++;
   }
@@ -109,7 +109,7 @@ class ScoreDisplayState extends State<ScoreDisplay> {
       context,
       MaterialPageRoute(
         builder: (context) => GuessCollection(
-            currentPlayers, numberCards, maxNumberCards, roundNumber),
+            currentPlayers, cardNumber, maxNumberCards, roundNumber),
       ),
     );
   }
@@ -141,7 +141,7 @@ class ScoreDisplayState extends State<ScoreDisplay> {
   }
 
   actionButtonChanger() {
-    if (roundNumber >= maxNumberCards && numberCards == 1) {
+    if (roundNumber >= maxNumberCards && cardNumber == 1) {
       //Checks if the game is finished
       return actionButtonFinish();
     }
