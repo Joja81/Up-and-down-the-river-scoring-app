@@ -73,7 +73,7 @@ class StartScreenState extends State<StartScreen> {
                 Text('Max number of cards'),
                 NumberPicker.horizontal(
                   initialValue: maxNumberCards,
-                  minValue: 3,
+                  minValue: 1,
                   maxValue: 52,
                   onChanged: (value) => setState(() =>
                       maxNumberCards = value), //Changes the maxNumberCard value

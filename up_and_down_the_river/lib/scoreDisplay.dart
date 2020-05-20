@@ -65,6 +65,7 @@ class ScoreDisplayState extends State<ScoreDisplay> {
   Widget displayCurrentPlayer(BuildContext context, int index) {
     calculateScore(index);
     String heroName = 'hero' + currentPlayers[index].name;
+    int score = currentPlayers[index].score;
     return Hero(
       tag: heroName,
       child: Material(
@@ -73,8 +74,7 @@ class ScoreDisplayState extends State<ScoreDisplay> {
           leading: CircleAvatar(
             backgroundColor: currentPlayers[index].color,
           ),
-          title: Text(
-              currentPlayers[index].name + ': $currentPlayers[index].score'),
+          title: Text(currentPlayers[index].name + ': $score'),
         ),
       ),
     );
