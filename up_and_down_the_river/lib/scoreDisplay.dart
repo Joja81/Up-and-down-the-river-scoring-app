@@ -29,6 +29,8 @@ class ScoreDisplay extends StatefulWidget {
 }
 
 class ScoreDisplayState extends State<ScoreDisplay> {
+  List<Player> sortedPlayers = new List<Player>();
+
   final List<Player> currentPlayers;
   int cardNumber;
   final int maxNumberCards;
@@ -49,32 +51,32 @@ class ScoreDisplayState extends State<ScoreDisplay> {
       appBar: AppBar(
         title: Text('Scores'),
       ),
-      body: Column(
-        children: <Widget>[
-          Expanded(
-            child: ListView.builder(
-                itemCount: currentPlayers.length,
-                itemBuilder: displayCurrentPlayer),
-          ),
-        ],
-      ),
+      body: displayPlayers(),
       floatingActionButton: actionButtonChanger(),
     );
   }
 
+  Widget displayPlayers() {
+    calculateScore();
+    sortedPlayers = sortPlayers();
+    return ListView.builder(
+      itemCount: currentPlayers.length,
+      itemBuilder: displayCurrentPlayer,
+    );
+  }
+
   Widget displayCurrentPlayer(BuildContext context, int index) {
-    calculateScore(index);
-    String heroName = 'hero' + currentPlayers[index].name;
-    int score = currentPlayers[index].score;
+    String heroName = 'hero' + sortedPlayers[index].name;
+    int score = sortedPlayers[index].score;
     return Hero(
       tag: heroName,
       child: Material(
         type: MaterialType.transparency,
         child: ListTile(
           leading: CircleAvatar(
-            backgroundColor: currentPlayers[index].color,
+            backgroundColor: sortedPlayers[index].color,
           ),
-          title: Text(currentPlayers[index].name + ': $score'),
+          title: Text(sortedPlayers[index].name + ': $score'),
         ),
       ),
     );
@@ -86,11 +88,12 @@ class ScoreDisplayState extends State<ScoreDisplay> {
     changeToGuessCollection();
   }
 
-  void calculateScore(int index) {
-    if (guesses[index] == results[index]) {
-      //Checks if user guess and result were equal
-      int scoreAddition = 10 + 5 * results[index];
-      currentPlayers[index].score += scoreAddition;
+  void calculateScore() {
+    for (int i = 0; i < currentPlayers.length; i++) {
+      if (guesses[i] == results[i]) {
+        int scoreAddition = 10 + results[i] * 5;
+        currentPlayers[i].score += scoreAddition;
+      }
     }
   }
 
@@ -162,5 +165,35 @@ class ScoreDisplayState extends State<ScoreDisplay> {
       label: Text('Next round'),
       icon: Icon(Icons.done_all),
     );
+  }
+
+  List<Player> sortPlayers() {
+    List<Player> temporarySortPlayer = new List<Player>();
+
+    for (int i = 0; i < currentPlayers.length; i++) {
+      temporarySortPlayer.add(currentPlayers[i]);
+    }
+
+    List<Player> currentlySortedPlayers = new List<Player>();
+
+    while (temporarySortPlayer.length > 1) {
+      print(temporarySortPlayer.length);
+      Player highestScorePlayer = temporarySortPlayer[0];
+      int highestScoreIndex = 0;
+      for (int i = 1; i < temporarySortPlayer.length; i++) {
+        if (temporarySortPlayer[i].score > highestScorePlayer.score) {
+          highestScorePlayer = temporarySortPlayer[i];
+          highestScoreIndex = i;
+        }
+      }
+      print("before add");
+      currentlySortedPlayers.add(highestScorePlayer);
+      temporarySortPlayer.removeAt(highestScoreIndex);
+      print("after loop");
+    }
+    print(temporarySortPlayer.length);
+    currentlySortedPlayers.add(temporarySortPlayer[0]);
+
+    return currentlySortedPlayers;
   }
 }
