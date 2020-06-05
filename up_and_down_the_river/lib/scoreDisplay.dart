@@ -1,8 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_phoenix/flutter_phoenix.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 import 'package:upanddowntheriver/player.dart';
+import 'package:upanddowntheriver/startScreen.dart';
 
 import 'guessCollection.dart';
 
@@ -129,7 +129,10 @@ class ScoreDisplayState extends State<ScoreDisplay> {
             "Restart",
             style: TextStyle(color: Colors.white, fontSize: 20),
           ),
-          onPressed: () => Phoenix.rebirth(context),
+          onPressed: () {
+            resetPlayers();
+            goToStartScreen();
+          },
           width: 120,
         )
       ],
@@ -195,5 +198,20 @@ class ScoreDisplayState extends State<ScoreDisplay> {
     currentlySortedPlayers.add(temporarySortPlayer[0]);
 
     return currentlySortedPlayers;
+  }
+
+  void resetPlayers() {
+    for (int i = 0; i < currentPlayers.length; i++) {
+      currentPlayers[i].score = 0;
+    }
+  }
+
+  void goToStartScreen() {
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(
+        builder: (context) => StartScreen(currentPlayers),
+      ),
+    );
   }
 }

@@ -9,15 +9,18 @@ import 'package:upanddowntheriver/player.dart';
 import 'CreatePlayerScreen.dart';
 
 class StartScreen extends StatefulWidget {
+  final List<Player> currentPlayers;
+  StartScreen(this.currentPlayers);
   @override
   StartScreenState createState() {
-    return StartScreenState();
+    return StartScreenState(currentPlayers);
   }
 }
 
 class StartScreenState extends State<StartScreen> {
   //Store player info
-  List<Player> currentPlayers = new List<Player>();
+  List<Player> currentPlayers;
+  StartScreenState(this.currentPlayers);
   int maxNumberCards = 5; //Sets the initial value
 
   int i = 0;
