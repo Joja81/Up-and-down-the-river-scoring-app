@@ -31,6 +31,12 @@ class StartScreenState extends State<StartScreen> {
       appBar: AppBar(
         title: Text("Down the river"),
         centerTitle: true,
+        actions: <Widget>[
+          IconButton(
+            icon: Icon(Icons.help),
+            onPressed: displayHelp,
+          )
+        ],
       ),
       body: SafeArea(
         child: Column(children: <Widget>[
@@ -47,7 +53,7 @@ class StartScreenState extends State<StartScreen> {
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(10.0),
               ),
-              color: Theme.of(context).accentColor,
+              color: Theme.of(context).primaryColor,
               padding: EdgeInsets.all(20.0),
               child: Center(
                 child: Column(
@@ -122,7 +128,29 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
                 CreatePlayer())); //Shifts screen to create player screen
     if (newPlayer.color != null) {
       //Color is null if player hits back button instead of create player
-      currentPlayers.add(newPlayer); //Saves player to array
+      bool newName = checkForSameName(newPlayer);
+      if (newName == true) {
+        setState(() {
+          currentPlayers.add(newPlayer); //Saves player to array
+        });
+      } else {
+        Alert(
+          context: context,
+          type: AlertType.warning,
+          title: "Sorry",
+          desc: "More then one player can not have the same name",
+          buttons: [
+            DialogButton(
+              child: Text(
+                "Ok",
+                style: TextStyle(color: Colors.white, fontSize: 20),
+              ),
+              onPressed: () => Navigator.pop(context),
+              width: 120,
+            )
+          ],
+        ).show();
+      }
     }
   }
 
@@ -260,10 +288,66 @@ SOFTWARE. */
                   },
                 ),
               ],
+              secondaryActions: <Widget>[
+                IconSlideAction(
+                  caption: 'Move to top',
+                  color: Theme.of(context).buttonColor,
+                  icon: Icons.vertical_align_top,
+                  onTap: () {
+                    movePlayer(index, false);
+                  },
+                ),
+                IconSlideAction(
+                  caption: 'Move to bottom',
+                  color: Theme.of(context).primaryColor,
+                  icon: Icons.vertical_align_bottom,
+                  onTap: () {
+                    movePlayer(index, true);
+                  },
+                ),
+              ],
             ),
           ),
         );
       },
     );
+  }
+
+  void movePlayer(int index, bool bottom) {
+    setState(() {
+      Player tempPlayer = currentPlayers[index];
+      currentPlayers.removeAt(index);
+      if (bottom == true) {
+        currentPlayers.add(tempPlayer);
+      } else {
+        currentPlayers.insert(0, tempPlayer);
+      }
+    });
+  }
+
+  void displayHelp() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Help'),
+          content: Text(
+              'This app is a basic scorer for the game "Up and Down the River". Swiping left or right on a name allows you to delete or rearrange it when setting up the game. \n\n By Joshua Smee'),
+        );
+      },
+    );
+  }
+
+  void displaySettings() {}
+
+  bool checkForSameName(Player newPlayer) {
+    bool returnValue = true;
+    for (int i = 0; i < currentPlayers.length; i++) {
+      if (currentPlayers[i].name.toUpperCase() ==
+          newPlayer.name.toUpperCase()) {
+        returnValue = false;
+      }
+    }
+    return returnValue;
   }
 }

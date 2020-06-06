@@ -56,30 +56,14 @@ class CreatePlayerState extends State<CreatePlayer> {
               ),
             ),
           ),
-          Container(
-            padding: EdgeInsets.symmetric(
-              vertical: 20,
-              horizontal: 60,
-            ),
-            child: RaisedButton(
-              shape: CircleBorder(),
-              padding: EdgeInsets.all(50.0),
-              color: userColor,
-              child: Text(
-                "Select colour",
-                style: TextStyle(
-                  color: Colors.white,
-                ),
-              ),
-              onPressed: () {
-                showDialog(
-                  context: context,
-                  builder: (context) {
-                    return displayDialog(context);
-                  },
-                );
-              },
-            ),
+          MaterialColorPicker(
+            shrinkWrap: true,
+            allowShades: false,
+            selectedColor: userColor,
+            onMainColorChange: (Color color) {
+              userColor = color;
+            },
+            physics: ScrollPhysics(), //Allow scrolling on it
           ),
           SizedBox(
             height: 100,
@@ -111,8 +95,9 @@ class CreatePlayerState extends State<CreatePlayer> {
   void createPlayer(BuildContext context) {
     if (nameController.text.length > 0) {
       //Checks to make sure a name has been entered
-      print(userColor);
-      Navigator.pop(context, Player(nameController.text, userColor, 0));
+      String name = nameController.text;
+      name.trim(); //Removes extra spaces at start/ end
+      Navigator.pop(context, Player(name, userColor, 0));
     } else {
       /*
       MIT License
@@ -154,61 +139,5 @@ SOFTWARE.
         ],
       ).show();
     }
-  }
-
-  Dialog displayDialog(BuildContext context) {
-    Color tempColor = userColor;
-    return Dialog(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: <Widget>[
-          SizedBox(
-            height: 30,
-          ),
-          Expanded(
-            /*MIT License
-
-             Copyright (c) 2020 fuyumi
-
-           Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
-
-    The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
-
-    THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
-
-            child: MaterialColorPicker(
-              onMainColorChange: (Color color) {
-                tempColor = color;
-              },
-              allowShades: false,
-            ),
-          ),
-          SizedBox(
-            height: 10,
-          ),
-          RaisedButton(
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(10.0),
-            ),
-            child: Container(
-              margin: EdgeInsets.all(20.0),
-              child: Text("Select"),
-            ),
-            color: Theme.of(context).primaryColor,
-            onPressed: () {
-              setState(() {
-                userColor = tempColor;
-              });
-              Navigator.of(context).pop();
-            },
-          ),
-          Expanded(
-            child: SizedBox(
-              height: 10,
-            ),
-          ),
-        ],
-      ),
-    );
   }
 }

@@ -12,6 +12,7 @@ void main() {
       theme: ThemeData(
         primaryColor: Colors.blue,
         accentColor: Colors.blueAccent,
+        buttonColor: Colors.green,
       ),
       title: 'Up and down the river',
       home: StartScreen(currentPlayers),

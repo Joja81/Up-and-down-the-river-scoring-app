@@ -130,6 +130,7 @@ class ScoreDisplayState extends State<ScoreDisplay> {
             style: TextStyle(color: Colors.white, fontSize: 20),
           ),
           onPressed: () {
+            Navigator.pop(context);
             resetPlayers();
             goToStartScreen();
           },
@@ -180,7 +181,7 @@ class ScoreDisplayState extends State<ScoreDisplay> {
     List<Player> currentlySortedPlayers = new List<Player>();
 
     while (temporarySortPlayer.length > 1) {
-      print(temporarySortPlayer.length);
+//      print(temporarySortPlayer.length);
       Player highestScorePlayer = temporarySortPlayer[0];
       int highestScoreIndex = 0;
       for (int i = 1; i < temporarySortPlayer.length; i++) {
@@ -189,12 +190,12 @@ class ScoreDisplayState extends State<ScoreDisplay> {
           highestScoreIndex = i;
         }
       }
-      print("before add");
+//      print("before add");
       currentlySortedPlayers.add(highestScorePlayer);
       temporarySortPlayer.removeAt(highestScoreIndex);
-      print("after loop");
+//      print("after loop");
     }
-    print(temporarySortPlayer.length);
+//    print(temporarySortPlayer.length);
     currentlySortedPlayers.add(temporarySortPlayer[0]);
 
     return currentlySortedPlayers;
