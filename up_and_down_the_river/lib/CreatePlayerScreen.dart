@@ -96,7 +96,7 @@ class CreatePlayerState extends State<CreatePlayer> {
     if (nameController.text.length > 0) {
       //Checks to make sure a name has been entered
       String name = nameController.text;
-      name.trim(); //Removes extra spaces at start/ end
+      name = name.trim(); //Removes extra spaces at start/ end
       Navigator.pop(context, Player(name, userColor, 0));
     } else {
       /*

@@ -33,7 +33,7 @@ class StartScreenState extends State<StartScreen> {
         centerTitle: true,
         actions: <Widget>[
           IconButton(
-            icon: Icon(Icons.help),
+            icon: Icon(Icons.help_outline),
             onPressed: displayHelp,
           )
         ],
@@ -332,7 +332,7 @@ SOFTWARE. */
         return AlertDialog(
           title: Text('Help'),
           content: Text(
-              'This app is a basic scorer for the game "Up and Down the River". Swiping left or right on a name allows you to delete or rearrange it when setting up the game. \n\n By Joshua Smee'),
+              'This app is a basic scorer for the game "Up and Down the River". Swiping left or right on a name allows you to delete or rearrange it when setting up the game. \n\n V1.01 \n\n By Joshua Smee'),
         );
       },
     );
