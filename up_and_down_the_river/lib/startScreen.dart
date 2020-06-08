@@ -3,11 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:numberpicker/numberpicker.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
-import 'package:upanddowntheriver/Choices.dart';
+import 'package:upanddowntheriver/choices.dart';
 import 'package:upanddowntheriver/guessCollection.dart';
 import 'package:upanddowntheriver/player.dart';
+import 'package:upanddowntheriver/settingsPage.dart';
 
-import 'CreatePlayerScreen.dart';
+import 'createPlayerScreen.dart';
 
 class StartScreen extends StatefulWidget {
   final List<Player> currentPlayers;
@@ -359,7 +360,8 @@ SOFTWARE. */
 
   void choiceAction(String choice) {
     if (choice == Choices.Settings) {
-      print('Settings');
+      Navigator.push(
+          context, MaterialPageRoute(builder: (context) => SettingsPage()));
     } else if (choice == Choices.Help) {
       displayHelp();
     }
