@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:numberpicker/numberpicker.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
+import 'package:upanddowntheriver/Choices.dart';
 import 'package:upanddowntheriver/guessCollection.dart';
 import 'package:upanddowntheriver/player.dart';
 
@@ -32,10 +33,17 @@ class StartScreenState extends State<StartScreen> {
         title: Text("Down the river"),
         centerTitle: true,
         actions: <Widget>[
-          IconButton(
-            icon: Icon(Icons.help_outline),
-            onPressed: displayHelp,
-          )
+          PopupMenuButton<String>(
+            onSelected: choiceAction,
+            itemBuilder: (BuildContext context) {
+              return Choices.choices.map((String choice) {
+                return PopupMenuItem<String>(
+                  value: choice,
+                  child: Text(choice),
+                );
+              }).toList();
+            },
+          ),
         ],
       ),
       body: SafeArea(
@@ -338,8 +346,6 @@ SOFTWARE. */
     );
   }
 
-  void displaySettings() {}
-
   bool checkForSameName(Player newPlayer) {
     bool returnValue = true;
     for (int i = 0; i < currentPlayers.length; i++) {
@@ -349,5 +355,13 @@ SOFTWARE. */
       }
     }
     return returnValue;
+  }
+
+  void choiceAction(String choice) {
+    if (choice == Choices.Settings) {
+      print('Settings');
+    } else if (choice == Choices.Help) {
+      displayHelp();
+    }
   }
 }
