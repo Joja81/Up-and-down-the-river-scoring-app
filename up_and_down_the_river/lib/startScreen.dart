@@ -1,12 +1,11 @@
+import 'package:animated_theme_switcher/animated_theme_switcher.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:numberpicker/numberpicker.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
-import 'package:upanddowntheriver/choices.dart';
 import 'package:upanddowntheriver/guessCollection.dart';
 import 'package:upanddowntheriver/player.dart';
-import 'package:upanddowntheriver/settingsPage.dart';
 
 import 'createPlayerScreen.dart';
 
@@ -31,20 +30,21 @@ class StartScreenState extends State<StartScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        leading: ThemeSwitcher(
+          builder: (context) {
+            return IconButton(
+              icon: Icon(Icons.brightness_3),
+              onPressed: () => changeTheme(context),
+            );
+          },
+        ),
         title: Text("Down the river"),
         centerTitle: true,
         actions: <Widget>[
-          PopupMenuButton<String>(
-            onSelected: choiceAction,
-            itemBuilder: (BuildContext context) {
-              return Choices.choices.map((String choice) {
-                return PopupMenuItem<String>(
-                  value: choice,
-                  child: Text(choice),
-                );
-              }).toList();
-            },
-          ),
+          IconButton(
+            icon: Icon(Icons.help_outline),
+            onPressed: displayHelp,
+          )
         ],
       ),
       body: SafeArea(
@@ -358,12 +358,13 @@ SOFTWARE. */
     return returnValue;
   }
 
-  void choiceAction(String choice) {
-    if (choice == Choices.Settings) {
-      Navigator.push(
-          context, MaterialPageRoute(builder: (context) => SettingsPage()));
-    } else if (choice == Choices.Help) {
-      displayHelp();
+  void changeTheme(BuildContext context) {
+    ThemeData darkTheme = ThemeData.dark();
+    ThemeData lightTheme = ThemeData.light();
+    if (Theme.of(context).brightness == Brightness.dark) {
+      ThemeSwitcher.of(context).changeTheme(theme: lightTheme);
+    } else {
+      ThemeSwitcher.of(context).changeTheme(theme: darkTheme);
     }
   }
 }

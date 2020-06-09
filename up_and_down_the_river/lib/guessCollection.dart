@@ -65,14 +65,16 @@ class GuessCollectionState extends State<GuessCollection> {
         centerTitle: true,
       ),
       backgroundColor: Colors.white,
-      body: GridView.builder(
-        itemCount: currentPlayers.length,
-        itemBuilder: (context, index) {
-          return displayPlayers(index); //Builds grid of widgets
-        },
-        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-          //Sets grid style
-          crossAxisCount: 2,
+      body: Material(
+        child: GridView.builder(
+          itemCount: currentPlayers.length,
+          itemBuilder: (context, index) {
+            return displayPlayers(index); //Builds grid of widgets
+          },
+          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+            //Sets grid style
+            crossAxisCount: 2,
+          ),
         ),
       ),
     );

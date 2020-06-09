@@ -50,14 +50,16 @@ class ResultCollectionState extends State<ResultCollection> {
         centerTitle: true,
       ),
       backgroundColor: Colors.white,
-      body: GridView.builder(
-        itemCount: currentPlayers.length,
-        itemBuilder: (context, index) {
-          return displayPlayers(index);
-        },
-        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-          //Sets up grid
-          crossAxisCount: 2,
+      body: Material(
+        child: GridView.builder(
+          itemCount: currentPlayers.length,
+          itemBuilder: (context, index) {
+            return displayPlayers(index);
+          },
+          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+            //Sets up grid
+            crossAxisCount: 2,
+          ),
         ),
       ),
     );

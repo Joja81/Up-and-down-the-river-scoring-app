@@ -29,21 +29,30 @@ class SettingsPageState extends State<SettingsPage> {
 //                  ThemeSwitcher.of(context).changeTheme(theme: newTheme);
 //                },
 //              ),
-              ThemeSwitcher(
-                builder: (context) {
-                  return IconButton(
-                    onPressed: () {
-                      ThemeData newTheme = ThemeData(primaryColor: Colors.red);
-                      ThemeSwitcher.of(context).changeTheme(theme: newTheme);
-                    },
-                    icon: Icon(Icons.brightness_3, size: 25),
-                  );
-                },
-              ),
+//              ThemeSwitcher(
+//                builder: (context) {
+//                  return IconButton(
+//                    onPressed: () {
+//                      changeTheme(context);
+//                    },
+//                    icon: Icon(Icons.brightness_3),
+//                  );
+//                },
+//              ),
             ],
           ),
         );
       },
     ));
+  }
+
+  void changeTheme(BuildContext context) {
+    ThemeData darkTheme = ThemeData.dark();
+    ThemeData lightTheme = ThemeData.light();
+    if (Theme.of(context).brightness == Brightness.dark) {
+      ThemeSwitcher.of(context).changeTheme(theme: lightTheme);
+    } else {
+      ThemeSwitcher.of(context).changeTheme(theme: darkTheme);
+    }
   }
 }
