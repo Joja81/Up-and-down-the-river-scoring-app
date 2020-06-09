@@ -39,26 +39,31 @@ class ResultCollectionState extends State<ResultCollection> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      floatingActionButton: FloatingActionButton.extended(
-          onPressed: checkResults,
-          icon: Icon(Icons.done_all),
-          label: Text("View scores")),
-      appBar: AppBar(
-        title: Text(
-            'Enter results: $cardNumber cards'), //Shows how many cards there are
-        centerTitle: true,
-      ),
-      backgroundColor: Colors.white,
-      body: Material(
-        child: GridView.builder(
-          itemCount: currentPlayers.length,
-          itemBuilder: (context, index) {
-            return displayPlayers(index);
-          },
-          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-            //Sets up grid
-            crossAxisCount: 2,
+    return WillPopScope(
+      onWillPop: () {
+        return new Future(() => false);
+      },
+      child: Scaffold(
+        floatingActionButton: FloatingActionButton.extended(
+            onPressed: checkResults,
+            icon: Icon(Icons.done_all),
+            label: Text("View scores")),
+        appBar: AppBar(
+          title: Text(
+              'Enter results: $cardNumber cards'), //Shows how many cards there are
+          centerTitle: true,
+        ),
+        backgroundColor: Colors.white,
+        body: Material(
+          child: GridView.builder(
+            itemCount: currentPlayers.length,
+            itemBuilder: (context, index) {
+              return displayPlayers(index);
+            },
+            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+              //Sets up grid
+              crossAxisCount: 2,
+            ),
           ),
         ),
       ),

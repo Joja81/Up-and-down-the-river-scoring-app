@@ -53,27 +53,32 @@ class GuessCollectionState extends State<GuessCollection> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      floatingActionButton: FloatingActionButton.extended(
-          onPressed: () {
-            moveToResults();
-          },
-          icon: Icon(Icons.done_all),
-          label: Text("Enter results")),
-      appBar: AppBar(
-        title: Text('Enter guesses: $cardNumber cards'),
-        centerTitle: true,
-      ),
-      backgroundColor: Colors.white,
-      body: Material(
-        child: GridView.builder(
-          itemCount: currentPlayers.length,
-          itemBuilder: (context, index) {
-            return displayPlayers(index); //Builds grid of widgets
-          },
-          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-            //Sets grid style
-            crossAxisCount: 2,
+    return WillPopScope(
+      onWillPop: () {
+        return new Future(() => false);
+      },
+      child: Scaffold(
+        floatingActionButton: FloatingActionButton.extended(
+            onPressed: () {
+              moveToResults();
+            },
+            icon: Icon(Icons.done_all),
+            label: Text("Enter results")),
+        appBar: AppBar(
+          title: Text('Enter guesses: $cardNumber cards'),
+          centerTitle: true,
+        ),
+        backgroundColor: Colors.white,
+        body: Material(
+          child: GridView.builder(
+            itemCount: currentPlayers.length,
+            itemBuilder: (context, index) {
+              return displayPlayers(index); //Builds grid of widgets
+            },
+            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+              //Sets grid style
+              crossAxisCount: 2,
+            ),
           ),
         ),
       ),

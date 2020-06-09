@@ -28,68 +28,74 @@ class StartScreenState extends State<StartScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        leading: ThemeSwitcher(
-          builder: (context) {
-            return IconButton(
-              icon: Icon(Icons.brightness_3),
-              onPressed: () => changeTheme(context),
-            );
-          },
-        ),
-        title: Text("Down the river"),
-        centerTitle: true,
-        actions: <Widget>[
-          IconButton(
-            icon: Icon(Icons.help_outline),
-            onPressed: displayHelp,
-          )
-        ],
-      ),
-      body: SafeArea(
-        child: Column(children: <Widget>[
-          Container(
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(20.0),
-              color: Theme.of(context).primaryColor,
+    return WillPopScope(
+      //Stops back button closing application
+      onWillPop: () {
+        return new Future(() => false);
+      },
+      child: ThemeSwitchingArea(
+        child: Scaffold(
+          appBar: AppBar(
+            leading: ThemeSwitcher(
+              builder: (context) {
+                return IconButton(
+                  icon: Icon(Icons.brightness_3),
+                  onPressed: () => changeTheme(context),
+                );
+              },
             ),
-            margin: EdgeInsets.symmetric(
-              vertical: 30.0,
-              horizontal: 100.0,
-            ),
-            child: FlatButton(
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(10.0),
-              ),
-              color: Theme.of(context).primaryColor,
-              padding: EdgeInsets.all(20.0),
-              child: Center(
-                child: Column(
-                  children: <Widget>[
-                    Text(
-                      'Start',
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 30,
-                      ),
+            title: Text("Down the river"),
+            centerTitle: true,
+            actions: <Widget>[
+              IconButton(
+                icon: Icon(Icons.help_outline),
+                onPressed: displayHelp,
+              )
+            ],
+          ),
+          body: SafeArea(
+            child: Column(children: <Widget>[
+              Container(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(20.0),
+                  color: Theme.of(context).primaryColor,
+                ),
+                margin: EdgeInsets.symmetric(
+                  vertical: 30.0,
+                  horizontal: 100.0,
+                ),
+                child: FlatButton(
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10.0),
+                  ),
+                  color: Theme.of(context).primaryColor,
+                  padding: EdgeInsets.all(20.0),
+                  child: Center(
+                    child: Column(
+                      children: <Widget>[
+                        Text(
+                          'Start',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 30,
+                          ),
+                        ),
+                        Icon(
+                          Icons.flight_takeoff,
+                          color: Colors.white,
+                        ),
+                      ],
                     ),
-                    Icon(
-                      Icons.flight_takeoff,
-                      color: Colors.white,
-                    ),
-                  ],
+                  ),
+                  onPressed: moveNextScreen,
                 ),
               ),
-              onPressed: moveNextScreen,
-            ),
-          ),
-          Container(
-            child: Column(
-              children: <Widget>[
-                Text('Max number of cards'),
-                /* Copyright 2017 Marcin Szalek
+              Container(
+                child: Column(
+                  children: <Widget>[
+                    Text('Max number of cards'),
+                    /* Copyright 2017 Marcin Szalek
 
 Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met:
 
@@ -99,31 +105,33 @@ Redistribution and use in source and binary forms, with or without modification,
 
 THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. */
 
-                NumberPicker.horizontal(
-                  initialValue: maxNumberCards,
-                  minValue: 1,
-                  maxValue: 52,
-                  onChanged: (value) => setState(() =>
-                      maxNumberCards = value), //Changes the maxNumberCard value
+                    NumberPicker.horizontal(
+                      initialValue: maxNumberCards,
+                      minValue: 1,
+                      maxValue: 52,
+                      onChanged: (value) => setState(() => maxNumberCards =
+                          value), //Changes the maxNumberCard value
+                    ),
+                  ],
                 ),
-              ],
+              ),
+              Expanded(
+                child: displayPlayers(currentPlayers),
+              ),
+            ]),
+          ),
+          floatingActionButton: FloatingActionButton.extended(
+            icon: Icon(
+              Icons.person_add,
+              color: Colors.white,
             ),
+            label: Text(
+              "Add player",
+              style: TextStyle(color: Colors.white),
+            ),
+            onPressed: getNewPlayer,
           ),
-          Expanded(
-            child: displayPlayers(currentPlayers),
-          ),
-        ]),
-      ),
-      floatingActionButton: FloatingActionButton.extended(
-        icon: Icon(
-          Icons.person_add,
-          color: Colors.white,
         ),
-        label: Text(
-          "Add player",
-          style: TextStyle(color: Colors.white),
-        ),
-        onPressed: getNewPlayer,
       ),
     );
   }
@@ -341,7 +349,7 @@ SOFTWARE. */
         return AlertDialog(
           title: Text('Help'),
           content: Text(
-              'This app is a basic scorer for the game "Up and Down the River". Swiping left or right on a name allows you to delete or rearrange it when setting up the game. \n\n V1.01 \n\n By Joshua Smee'),
+              'This app is a basic scorer for the game "Up and Down the River". Swiping left or right on a name allows you to delete or rearrange it when setting up the game. \n\n V1.02 \n\n By Joshua Smee'),
         );
       },
     );

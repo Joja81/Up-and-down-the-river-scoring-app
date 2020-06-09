@@ -47,12 +47,17 @@ class ScoreDisplayState extends State<ScoreDisplay> {
   );
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Scores'),
+    return WillPopScope(
+      onWillPop: () {
+        return new Future(() => false);
+      },
+      child: Scaffold(
+        appBar: AppBar(
+          title: Text('Scores'),
+        ),
+        body: displayPlayers(),
+        floatingActionButton: actionButtonChanger(),
       ),
-      body: displayPlayers(),
-      floatingActionButton: actionButtonChanger(),
     );
   }
 
