@@ -34,20 +34,23 @@ class ResultCollectionState extends State<ResultCollection> {
   void initState() {
     super.initState();
     results = List.generate(currentPlayers.length,
-        (i) => 0); //Creates list of results, sets intital value to 0
+        (i) => 0); //Creates list of results, sets initial value to 0
   }
 
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
       onWillPop: () {
+        //Catches back button from closing application
         return new Future(() => false);
       },
       child: Scaffold(
         floatingActionButton: FloatingActionButton.extended(
-            onPressed: checkResults,
-            icon: Icon(Icons.done_all),
-            label: Text("View scores")),
+          //Button to proceed to next screen
+          onPressed: checkResults,
+          icon: Icon(Icons.done_all),
+          label: Text("View scores"),
+        ),
         appBar: AppBar(
           title: Text(
               'Enter results: $cardNumber cards'), //Shows how many cards there are
@@ -56,13 +59,14 @@ class ResultCollectionState extends State<ResultCollection> {
         backgroundColor: Colors.white,
         body: Material(
           child: GridView.builder(
-            itemCount: currentPlayers.length,
+            //Grid to display players
+            itemCount: currentPlayers.length, //Length of grid
             itemBuilder: (context, index) {
+              //Builder for each individual widget in grid
               return displayPlayers(index);
             },
             gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-              //Sets up grid
-              crossAxisCount: 2,
+              crossAxisCount: 2, //Width of grid
             ),
           ),
         ),
@@ -71,23 +75,27 @@ class ResultCollectionState extends State<ResultCollection> {
   }
 
   Widget displayPlayers(int index) {
-    //Sets up each player display
-    String heroName = 'hero' + currentPlayers[index].name;
+    //Creates widget for each player
+    String heroName =
+        'hero' + currentPlayers[index].name; //Identifier for animation
 
     return Hero(
       tag: heroName,
       child: Material(
+        //Unifies animations
         type: MaterialType.transparency,
         child: Container(
           padding: EdgeInsets.all(20.0),
           margin: EdgeInsets.all(10.0),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(20.0),
-            color: currentPlayers[index].color,
+            color:
+                currentPlayers[index].color, //Sets colour of widget background
           ),
           child: Column(
             children: <Widget>[
               Text(
+                //Player name
                 currentPlayers[index].name,
                 style: TextStyle(
                   fontSize: 20,
@@ -108,20 +116,12 @@ class ResultCollectionState extends State<ResultCollection> {
                   accentColor: Colors.white, //Sets color of number scroller
                 ),
                 child: Expanded(
-                  /* Copyright 2017 Marcin Szalek
-
-Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met:
-
-1. Redistributions of source code must retain the above copyright notice, this list of conditions and the following disclaimer.
-
-2. Redistributions in binary form must reproduce the above copyright notice, this list of conditions and the following disclaimer in the documentation and/or other materials provided with the distribution.
-
-THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. */
-
                   child: NumberPicker.horizontal(
+                    //Selector for result
                     initialValue: results[index],
                     minValue: 0,
-                    maxValue: cardNumber,
+                    maxValue:
+                        cardNumber, //Stops player making result bigger then possible
                     onChanged: (value) => setState(() => results[index] =
                         value), //Updates value as player moves scroller
                   ),
@@ -142,14 +142,14 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
     }
     if (resultSum == cardNumber) {
       //Checks to make sure correct number fo results entered
-      changeToScore();
+      changeToScore(); //Moves to next screen
     } else {
-      displayWarning();
+      displayWarning(); //Displays warning to user that results have been entered wrong
     }
   }
 
   void changeToScore() {
-    //Moves to scores screen
+    //Moves to scores screen and deletes current screen
     Navigator.pushReplacement(
       context,
       MaterialPageRoute(
@@ -160,30 +160,8 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
   }
 
   void displayWarning() {
-    /*
-      MIT License
-
-Copyright (c) 2018 Ratel (https://ratel.com.tr)
-
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
-       */
     Alert(
+      //Displays popup warning to user
       context: context,
       type: AlertType.warning,
       title: "Sorry",

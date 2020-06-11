@@ -19,7 +19,7 @@ class ScoreDisplay extends StatefulWidget {
     this.maxNumberCards,
     this.results,
     this.guesses,
-    this.roundNumber,
+    this.roundNumber, //Load variables
   );
   @override
   ScoreDisplayState createState() {
@@ -49,29 +49,33 @@ class ScoreDisplayState extends State<ScoreDisplay> {
   Widget build(BuildContext context) {
     return WillPopScope(
       onWillPop: () {
-        return new Future(() => false);
+        return new Future(() => false); //Catches back button
       },
       child: Scaffold(
         appBar: AppBar(
           title: Text('Scores'),
         ),
-        body: displayPlayers(),
-        floatingActionButton: actionButtonChanger(),
+        body: displayPlayers(), //Dispalys list of players
+        floatingActionButton:
+            actionButtonChanger(), //Directs to method which changes action button depending on if last round or not
       ),
     );
   }
 
   Widget displayPlayers() {
     calculateScore();
-    sortedPlayers = sortPlayers();
+    sortedPlayers = sortPlayers(); //List of palyers sorted by score
     return ListView.builder(
+      //Widget that holds all the players and there scores
       itemCount: currentPlayers.length,
-      itemBuilder: displayCurrentPlayer,
+      itemBuilder:
+          displayCurrentPlayer, //Creates individual widget for each player
     );
   }
 
   Widget displayCurrentPlayer(BuildContext context, int index) {
-    String heroName = 'hero' + sortedPlayers[index].name;
+    //Creates widget for player
+    String heroName = 'hero' + sortedPlayers[index].name; //Animation identifier
     int score = sortedPlayers[index].score;
     return Hero(
       tag: heroName,
@@ -79,40 +83,46 @@ class ScoreDisplayState extends State<ScoreDisplay> {
         type: MaterialType.transparency,
         child: ListTile(
           leading: CircleAvatar(
-            backgroundColor: sortedPlayers[index].color,
+            backgroundColor: sortedPlayers[index].color, //Colour of player icon
           ),
-          title: Text(sortedPlayers[index].name + ': $score'),
+          title: Text(
+              sortedPlayers[index].name + ': $score'), //Displays name and score
         ),
       ),
     );
   }
 
-  void nextGame() {
+  void nextRound() {
+    //Sets up for next round of game
     changeCardNumber();
     rearrangePlayers();
     changeToGuessCollection();
   }
 
   void calculateScore() {
+    //Calculates score of each player
     for (int i = 0; i < currentPlayers.length; i++) {
+      //Loops through each player
       if (guesses[i] == results[i]) {
-        int scoreAddition = 10 + results[i] * 5;
-        currentPlayers[i].score += scoreAddition;
+        //Checks if player guesssed correct
+        int scoreAddition = 10 + results[i] * 5; //Calculates addition to score
+        currentPlayers[i].score += scoreAddition; //Adds addition to main score
       }
     }
   }
 
   void changeCardNumber() {
     if (roundNumber >= maxNumberCards) {
-      //Checks if game is going up or down the river
+      //Checks if game is going up or down the river then adjusts card number
       cardNumber--;
     } else {
       cardNumber++;
     }
-    roundNumber++;
+    roundNumber++; //Always adds to round number
   }
 
   void changeToGuessCollection() {
+    //Shifts user to guess collection screen and deletes current screen.
     Navigator.pushReplacement(
       context,
       MaterialPageRoute(
@@ -123,7 +133,9 @@ class ScoreDisplayState extends State<ScoreDisplay> {
   }
 
   void restartDialogue() {
+    //Displays when game is finished
     Alert(
+      //Popup menu congratulating user
       context: context,
       type: AlertType.success,
       title: "Congratulations",
@@ -136,8 +148,8 @@ class ScoreDisplayState extends State<ScoreDisplay> {
           ),
           onPressed: () {
             Navigator.pop(context);
-            resetPlayers();
-            goToStartScreen();
+            resetPlayers(); //Deletes scores from players
+            goToStartScreen(); //Moves to start screen
           },
           width: 120,
         )
@@ -146,68 +158,74 @@ class ScoreDisplayState extends State<ScoreDisplay> {
   }
 
   void rearrangePlayers() {
-    Player tempPlayer =
-        currentPlayers[0]; //Puts the player who was first last time at the end
-    currentPlayers.removeAt(0);
-    currentPlayers.add(tempPlayer);
+    Player tempPlayer = currentPlayers[0]; //Stores first player in temp storage
+    currentPlayers.removeAt(0); //Removes first player
+    currentPlayers.add(tempPlayer); //Adds first player to back of list
   }
 
   actionButtonChanger() {
     if (roundNumber >= maxNumberCards && cardNumber == 1) {
       //Checks if the game is finished
-      return actionButtonFinish();
+      return actionButtonFinish(); //Displays finish message if game is done
     }
-    return actionButtonNext();
+    return actionButtonNext(); //Other wise displays next round
   }
 
   actionButtonFinish() {
+    //Floating button that appears if game is done
     return FloatingActionButton.extended(
-      onPressed: restartDialogue,
+      onPressed: restartDialogue, //Displays message to restart game
       label: Text('Finish'),
       icon: Icon(Icons.flight_land),
     );
   }
 
   actionButtonNext() {
+    //Floating button to go to next round
     return FloatingActionButton.extended(
-      onPressed: nextGame,
+      onPressed: nextRound, //Sets up next round
       label: Text('Next round'),
       icon: Icon(Icons.done_all),
     );
   }
 
   List<Player> sortPlayers() {
+    //Sorts the players by score
     List<Player> temporarySortPlayer = new List<Player>();
 
     for (int i = 0; i < currentPlayers.length; i++) {
+      //Adds current players to temporary list
       temporarySortPlayer.add(currentPlayers[i]);
     }
 
     List<Player> currentlySortedPlayers = new List<Player>();
 
     while (temporarySortPlayer.length > 1) {
-//      print(temporarySortPlayer.length);
-      Player highestScorePlayer = temporarySortPlayer[0];
+      Player highestScorePlayer =
+          temporarySortPlayer[0]; //Initally sets first player to be highest
       int highestScoreIndex = 0;
       for (int i = 1; i < temporarySortPlayer.length; i++) {
+        //Runs thorugh temp list
         if (temporarySortPlayer[i].score > highestScorePlayer.score) {
-          highestScorePlayer = temporarySortPlayer[i];
-          highestScoreIndex = i;
+          //Checks if current player is higher then current highest player
+          highestScorePlayer = temporarySortPlayer[
+              i]; //Makes current player highest score player if it is
+          highestScoreIndex = i; //Stores index of currently highest player
         }
       }
-//      print("before add");
-      currentlySortedPlayers.add(highestScorePlayer);
-      temporarySortPlayer.removeAt(highestScoreIndex);
-//      print("after loop");
+      currentlySortedPlayers
+          .add(highestScorePlayer); //Adds player to end of currentlySorted list
+      temporarySortPlayer
+          .removeAt(highestScoreIndex); //Removes player from temp list
     }
-//    print(temporarySortPlayer.length);
-    currentlySortedPlayers.add(temporarySortPlayer[0]);
+    currentlySortedPlayers.add(temporarySortPlayer[0]); //Adds last player
 
     return currentlySortedPlayers;
   }
 
   void resetPlayers() {
     for (int i = 0; i < currentPlayers.length; i++) {
+      //Sets all players score to 0 for restart of app
       currentPlayers[i].score = 0;
     }
   }
@@ -216,7 +234,8 @@ class ScoreDisplayState extends State<ScoreDisplay> {
     Navigator.pushReplacement(
       context,
       MaterialPageRoute(
-        builder: (context) => StartScreen(currentPlayers),
+        builder: (context) =>
+            StartScreen(currentPlayers), //Goes to start screen
       ),
     );
   }

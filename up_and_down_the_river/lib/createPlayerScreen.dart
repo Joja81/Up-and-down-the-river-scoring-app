@@ -12,7 +12,8 @@ class CreatePlayer extends StatefulWidget {
 }
 
 class CreatePlayerState extends State<CreatePlayer> {
-  final TextEditingController nameController = new TextEditingController();
+  final TextEditingController nameController =
+      new TextEditingController(); //Controller for name entry which tracks what is entered
   Color userColor = Colors.grey;
 
   @override
@@ -23,6 +24,7 @@ class CreatePlayerState extends State<CreatePlayer> {
       ),
       body: SafeArea(
         child: ListView(children: <Widget>[
+          //Creates scrolling set of widgets
           Container(
             padding: EdgeInsets.all(40.0),
             child: Center(
@@ -41,7 +43,7 @@ class CreatePlayerState extends State<CreatePlayer> {
                 border: OutlineInputBorder(),
                 labelText: 'Name',
               ),
-              controller: nameController,
+              controller: nameController, //Stores what is entered
             ),
           ),
           Container(
@@ -51,21 +53,24 @@ class CreatePlayerState extends State<CreatePlayer> {
                 'Colour',
                 style: TextStyle(
                   fontSize: 22,
-                  color: Colors.grey,
                 ),
               ),
             ),
           ),
           MaterialColorPicker(
-            shrinkWrap: true,
+            //Widget to let player pick colour
+            shrinkWrap:
+                true, //Minimizes extra space widget takes up, otherwise expands to fit space, breaking screen
             allowShades: false,
             selectedColor: userColor,
             onMainColorChange: (Color color) {
+              //Changes colour selection on user seleciton
               userColor = color;
             },
             physics: ScrollPhysics(), //Allow scrolling on it
           ),
           SizedBox(
+            //Seperates out widgets
             height: 100,
           ),
           Row(
@@ -95,34 +100,13 @@ class CreatePlayerState extends State<CreatePlayer> {
   void createPlayer(BuildContext context) {
     if (nameController.text.length > 0) {
       //Checks to make sure a name has been entered
-      String name = nameController.text;
+      String name = nameController.text; //Gets name from text entry widget
       name = name.trim(); //Removes extra spaces at start/ end
-      Navigator.pop(context, Player(name, userColor, 0));
+      Navigator.pop(
+          context, Player(name, userColor, 0)); //Moves back to start screen
     } else {
-      /*
-      MIT License
-
-Copyright (c) 2018 Ratel (https://ratel.com.tr)
-
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
-       */
       Alert(
+        //Displays warning to user
         context: context,
         type: AlertType.error,
         title: "Sorry",
@@ -133,7 +117,8 @@ SOFTWARE.
               "Ok",
               style: TextStyle(color: Colors.white, fontSize: 20),
             ),
-            onPressed: () => Navigator.pop(context),
+            onPressed: () => Navigator.pop(
+                context), //Moves screen back to create player screen when button pressed
             width: 120,
           )
         ],

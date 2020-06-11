@@ -1,6 +1,7 @@
 import 'dart:ui';
 
 class Player {
+  //Record for player
   String name;
   Color color;
   int score;

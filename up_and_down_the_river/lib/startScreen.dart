@@ -37,8 +37,10 @@ class StartScreenState extends State<StartScreen> {
         child: Scaffold(
           appBar: AppBar(
             leading: ThemeSwitcher(
+              //Allows for theme switching code
               builder: (context) {
                 return IconButton(
+                  //Button to change application theme
                   icon: Icon(Icons.brightness_3),
                   onPressed: () => changeTheme(context),
                 );
@@ -48,14 +50,17 @@ class StartScreenState extends State<StartScreen> {
             centerTitle: true,
             actions: <Widget>[
               IconButton(
+                //Button for help screen
                 icon: Icon(Icons.help_outline),
                 onPressed: displayHelp,
               )
             ],
           ),
           body: SafeArea(
+            //Stops the application going into non-readable parts of screen
             child: Column(children: <Widget>[
               Container(
+                //Sorounds start button
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(20.0),
                   color: Theme.of(context).primaryColor,
@@ -65,6 +70,7 @@ class StartScreenState extends State<StartScreen> {
                   horizontal: 100.0,
                 ),
                 child: FlatButton(
+                  //Start button
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(10.0),
                   ),
@@ -92,19 +98,10 @@ class StartScreenState extends State<StartScreen> {
                 ),
               ),
               Container(
+                //Allows entry of number of cards
                 child: Column(
                   children: <Widget>[
                     Text('Max number of cards'),
-                    /* Copyright 2017 Marcin Szalek
-
-Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met:
-
-1. Redistributions of source code must retain the above copyright notice, this list of conditions and the following disclaimer.
-
-2. Redistributions in binary form must reproduce the above copyright notice, this list of conditions and the following disclaimer in the documentation and/or other materials provided with the distribution.
-
-THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. */
-
                     NumberPicker.horizontal(
                       initialValue: maxNumberCards,
                       minValue: 1,
@@ -116,18 +113,18 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
                 ),
               ),
               Expanded(
-                child: displayPlayers(currentPlayers),
+                child: displayPlayers(
+                    currentPlayers), //Displays created players or message about creating players
               ),
             ]),
           ),
           floatingActionButton: FloatingActionButton.extended(
+            //Floating button for creating player
             icon: Icon(
               Icons.person_add,
-              color: Colors.white,
             ),
             label: Text(
               "Add player",
-              style: TextStyle(color: Colors.white),
             ),
             onPressed: getNewPlayer,
           ),
@@ -145,13 +142,16 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
                 CreatePlayer())); //Shifts screen to create player screen
     if (newPlayer.color != null) {
       //Color is null if player hits back button instead of create player
-      bool newName = checkForSameName(newPlayer);
+      bool newName =
+          checkForSameName(newPlayer); //Checks if player name is already taken
       if (newName == true) {
         setState(() {
+          //Updates screen
           currentPlayers.add(newPlayer); //Saves player to array
         });
       } else {
         Alert(
+          //Dispalys message that player name is already taken
           context: context,
           type: AlertType.warning,
           title: "Sorry",
@@ -172,12 +172,13 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
   }
 
   void _showSnackBar(BuildContext context, String text) {
-    Scaffold.of(context).showSnackBar(SnackBar(content: Text(text)));
+    Scaffold.of(context).showSnackBar(SnackBar(
+        content: Text(text))); //Displays message in popup snackbar at bottom\
   }
 
   void removePlayer(int index) {
     setState(() {
-      //Updates anything related to the variables enclosed
+      //Updates the display
       currentPlayers.removeAt(index);
     });
   }
@@ -201,39 +202,19 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
   void moveNextScreen() {
     if (currentPlayers.length > 1) {
       Navigator.pushReplacement(
-        //Change to next screen, deleting current screen
-        // Changes screen to score guess collection
+        //Change to guess collection, deleting current screen to remove back button
         context,
         MaterialPageRoute(
-          builder: (context) =>
-              GuessCollection(currentPlayers, 1, maxNumberCards, 1),
+          builder: (context) => GuessCollection(
+              currentPlayers,
+              1,
+              maxNumberCards,
+              1), //Sets destination and variables to be send, sends 1 for round and card number to start game
         ),
       );
     } else {
-      /*
-      MIT License
-
-Copyright (c) 2018 Ratel (https://ratel.com.tr)
-
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
-       */
       Alert(
+        //Shows popup message to user if there are not enough players
         context: context,
         type: AlertType.info,
         title: "Sorry",
@@ -244,7 +225,7 @@ SOFTWARE.
               "Ok",
               style: TextStyle(color: Colors.white, fontSize: 20),
             ),
-            onPressed: () => Navigator.pop(context),
+            onPressed: () => Navigator.pop(context), //Puts back on start screen
             width: 120,
           )
         ],
@@ -254,6 +235,7 @@ SOFTWARE.
 
   displayList() {
     return ListView.builder(
+      //Creates an individual entry in list
       itemCount: currentPlayers.length,
       itemBuilder: (context, index) {
         String heroName =
@@ -262,34 +244,17 @@ SOFTWARE.
         return Hero(
           tag: heroName, //Identifier for animation
           child: Material(
+            //Keeps animatios smooth as combines all the widgets in it
             type: MaterialType.transparency,
-            /* MIT License
-
-Copyright (c) 2018 Romain Rastel
-
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE. */
             child: Slidable(
-              actionPane: SlidableDrawerActionPane(),
+              //Allows sliding actions
+              actionPane:
+                  SlidableDrawerActionPane(), //Motion for sliding actions
               actionExtentRatio: 0.25,
               child: ListTile(
                 leading: CircleAvatar(
-                  backgroundColor: currentPlayers[index].color,
+                  backgroundColor: currentPlayers[index]
+                      .color, //Creates circle with user colour
                 ),
                 title: Text(currentPlayers[index].name),
               ),
@@ -300,18 +265,21 @@ SOFTWARE. */
                   color: Colors.red,
                   icon: Icons.delete,
                   onTap: () {
-                    removePlayer(index);
-                    _showSnackBar(context, 'Removed');
+                    removePlayer(index); //Removes player from array and screen
+                    _showSnackBar(context,
+                        'Removed'); //Displays message in snack bar to user
                   },
                 ),
               ],
               secondaryActions: <Widget>[
+                //Sets actions for sliding from the right
                 IconSlideAction(
                   caption: 'Move to top',
                   color: Theme.of(context).buttonColor,
                   icon: Icons.vertical_align_top,
                   onTap: () {
-                    movePlayer(index, false);
+                    movePlayer(
+                        index, false); //False shows that not moving to bottom
                   },
                 ),
                 IconSlideAction(
@@ -319,7 +287,7 @@ SOFTWARE. */
                   color: Theme.of(context).primaryColor,
                   icon: Icons.vertical_align_bottom,
                   onTap: () {
-                    movePlayer(index, true);
+                    movePlayer(index, true); //True shows that moving to top
                   },
                 ),
               ],
@@ -332,12 +300,13 @@ SOFTWARE. */
 
   void movePlayer(int index, bool bottom) {
     setState(() {
-      Player tempPlayer = currentPlayers[index];
-      currentPlayers.removeAt(index);
+      //Updates the screen
+      Player tempPlayer = currentPlayers[index]; //Puts player in temp storage
+      currentPlayers.removeAt(index); //Removes player from list
       if (bottom == true) {
-        currentPlayers.add(tempPlayer);
+        currentPlayers.add(tempPlayer); //Adds player to end
       } else {
-        currentPlayers.insert(0, tempPlayer);
+        currentPlayers.insert(0, tempPlayer); //Adds player to start
       }
     });
   }
@@ -347,32 +316,38 @@ SOFTWARE. */
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
+          //Shows pop up window to user
           title: Text('Help'),
           content: Text(
-              'This app is a basic scorer for the game "Up and Down the River". Swiping left or right on a name allows you to delete or rearrange it when setting up the game. \n\n V1.02 \n\n By Joshua Smee'),
+              'This app is a basic scorer for the game "Up and Down the River". Swiping left or right on a name allows you to delete or rearrange it when setting up the game. \n\n V1.02.1 \n\n By Joshua Smee'),
         );
       },
     );
   }
 
   bool checkForSameName(Player newPlayer) {
-    bool returnValue = true;
+    bool newName = true;
     for (int i = 0; i < currentPlayers.length; i++) {
+      //Runs through names and makes sure that name is not all ready used. Causes problem with hero animation if names are identical
       if (currentPlayers[i].name.toUpperCase() ==
           newPlayer.name.toUpperCase()) {
-        returnValue = false;
+        newName =
+            false; //Changes new name to false if it finds that name is same as another
       }
     }
-    return returnValue;
+    return newName;
   }
 
   void changeTheme(BuildContext context) {
-    ThemeData darkTheme = ThemeData.dark();
+    ThemeData darkTheme = ThemeData.dark(); //Creates themes that can be added
     ThemeData lightTheme = ThemeData.light();
     if (Theme.of(context).brightness == Brightness.dark) {
-      ThemeSwitcher.of(context).changeTheme(theme: lightTheme);
+      //Checks to see if dark mode is active or not
+      ThemeSwitcher.of(context).changeTheme(
+          theme: lightTheme); //Sets theme to light if them is currently dark
     } else {
-      ThemeSwitcher.of(context).changeTheme(theme: darkTheme);
+      ThemeSwitcher.of(context).changeTheme(
+          theme: darkTheme); //Sets theme to dark if theme is currently light
     }
   }
 }
