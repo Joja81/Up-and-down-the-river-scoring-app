@@ -116,9 +116,10 @@ class ResultCollectionState extends State<ResultCollection> {
                   accentColor: Colors.white, //Sets color of number scroller
                 ),
                 child: Expanded(
-                  child: NumberPicker.horizontal(
+                  child: NumberPicker(
                     //Selector for result
-                    initialValue: results[index],
+                    value: results[index],
+                    axis: Axis.horizontal,
                     minValue: 0,
                     maxValue:
                         cardNumber, //Stops player making result bigger then possible

@@ -102,8 +102,10 @@ class StartScreenState extends State<StartScreen> {
                 child: Column(
                   children: <Widget>[
                     Text('Max number of cards'),
-                    NumberPicker.horizontal(
-                      initialValue: maxNumberCards,
+                    SizedBox(height: 10,),
+                    NumberPicker(
+                      value: maxNumberCards,
+                      axis: Axis.horizontal,
                       minValue: 1,
                       maxValue: 52,
                       onChanged: (value) => setState(() => maxNumberCards =

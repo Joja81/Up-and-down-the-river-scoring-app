@@ -137,11 +137,12 @@ class GuessCollectionState extends State<GuessCollection> {
                   accentColor: Colors.white,
                 ),
                 child: Expanded(
-                  child: NumberPicker.horizontal(
+                  child: NumberPicker(
                     //Slider for number selection
-                    initialValue:
+                    value:
                         guesses[index], //Sets what the current value is
                     minValue: 0,
+                    axis: Axis.horizontal,
                     maxValue:
                         cardNumber, //Stops the user from entering number larger then the number of cards
                     onChanged: (value) => setState(() => guesses[index] =

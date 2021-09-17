@@ -39,7 +39,7 @@ dependencies:
     #LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
   #OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
   #SOFTWARE.
-  flutter_slidable: ^0.5.4
+  flutter_slidable: ^0.6.0
   #Copyright (c) 2018 Romain Rastel
     #
     #Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -79,7 +79,7 @@ dependencies:
     #LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
   #OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
   #SOFTWARE.
-  numberpicker: ^1.2.0
+  numberpicker: ^2.1.1
   #Copyright 2017 Marcin Szalek
     #
     #Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met:
