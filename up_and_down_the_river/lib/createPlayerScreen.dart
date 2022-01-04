@@ -39,12 +39,14 @@ class CreatePlayerState extends State<CreatePlayer> {
           Container(
             padding: EdgeInsets.symmetric(horizontal: 30.0),
             child: TextField(
-              decoration: InputDecoration(
-                border: OutlineInputBorder(),
-                labelText: 'Name',
-              ),
-              controller: nameController, //Stores what is entered
-            ),
+                decoration: InputDecoration(
+                  border: OutlineInputBorder(),
+                  labelText: 'Name',
+                ),
+                controller: nameController, //Stores what is entered
+                onSubmitted: (String str) {
+                  createPlayer(context);
+                }),
           ),
           Container(
             padding: EdgeInsets.all(10.0),
@@ -70,7 +72,7 @@ class CreatePlayerState extends State<CreatePlayer> {
             physics: ScrollPhysics(), //Allow scrolling on it
           ),
           SizedBox(
-            //Seperates out widgets
+            //Separates out widgets
             height: 100,
           ),
           Row(

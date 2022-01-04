@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:animated_theme_switcher/animated_theme_switcher.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -103,13 +105,20 @@ class StartScreenState extends State<StartScreen> {
                   children: <Widget>[
                     Text('Max number of cards'),
                     SizedBox(height: 10,),
-                    NumberPicker(
-                      value: maxNumberCards,
-                      axis: Axis.horizontal,
-                      minValue: 1,
-                      maxValue: 52,
-                      onChanged: (value) => setState(() => maxNumberCards =
-                          value), //Changes the maxNumberCard value
+                    ScrollConfiguration(
+                      behavior: ScrollConfiguration.of(context).copyWith(dragDevices: {
+                        // enable touch and mouse gesture
+                        PointerDeviceKind.touch,
+                        PointerDeviceKind.mouse,
+                      }),
+                      child: NumberPicker(
+                        value: maxNumberCards,
+                        axis: Axis.horizontal,
+                        minValue: 1,
+                        maxValue: 52,
+                        onChanged: (value) => setState(() => maxNumberCards =
+                            value), //Changes the maxNumberCard value
+                      ),
                     ),
                   ],
                 ),

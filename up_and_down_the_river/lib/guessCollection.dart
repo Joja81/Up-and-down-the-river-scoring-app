@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:numberpicker/numberpicker.dart';
@@ -137,16 +139,23 @@ class GuessCollectionState extends State<GuessCollection> {
                   accentColor: Colors.white,
                 ),
                 child: Expanded(
-                  child: NumberPicker(
-                    //Slider for number selection
-                    value:
-                        guesses[index], //Sets what the current value is
-                    minValue: 0,
-                    axis: Axis.horizontal,
-                    maxValue:
-                        cardNumber, //Stops the user from entering number larger then the number of cards
-                    onChanged: (value) => setState(() => guesses[index] =
-                        value), //Sets value for guess when number is changed
+                  child: ScrollConfiguration(
+                    behavior:
+                        ScrollConfiguration.of(context).copyWith(dragDevices: {
+                      // enable touch and mouse gesture
+                      PointerDeviceKind.touch,
+                      PointerDeviceKind.mouse,
+                    }),
+                    child: NumberPicker(
+                      //Slider for number selection
+                      value: guesses[index], //Sets what the current value is
+                      minValue: 0,
+                      axis: Axis.horizontal,
+                      maxValue:
+                          cardNumber, //Stops the user from entering number larger then the number of cards
+                      onChanged: (value) => setState(() => guesses[index] =
+                          value), //Sets value for guess when number is changed
+                    ),
                   ),
                 ),
               )

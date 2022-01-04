@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:numberpicker/numberpicker.dart';
@@ -116,15 +118,23 @@ class ResultCollectionState extends State<ResultCollection> {
                   accentColor: Colors.white, //Sets color of number scroller
                 ),
                 child: Expanded(
-                  child: NumberPicker(
-                    //Selector for result
-                    value: results[index],
-                    axis: Axis.horizontal,
-                    minValue: 0,
-                    maxValue:
-                        cardNumber, //Stops player making result bigger then possible
-                    onChanged: (value) => setState(() => results[index] =
-                        value), //Updates value as player moves scroller
+                  child: ScrollConfiguration(
+                    behavior:
+                        ScrollConfiguration.of(context).copyWith(dragDevices: {
+                      // enable touch and mouse gesture
+                      PointerDeviceKind.touch,
+                      PointerDeviceKind.mouse,
+                    }),
+                    child: NumberPicker(
+                      //Selector for result
+                      value: results[index],
+                      axis: Axis.horizontal,
+                      minValue: 0,
+                      maxValue:
+                          cardNumber, //Stops player making result bigger then possible
+                      onChanged: (value) => setState(() => results[index] =
+                          value), //Updates value as player moves scroller
+                    ),
                   ),
                 ),
               )
